@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NotebookLM ?먯냼??硫?곗쑀利?媛뺤쓽 媛?대뱶 ???대툕?덉씤</title>
+<title>NotebookLM 원소스 멀티유즈 강의 가이드 — 이브레인</title>
 <style>
   *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
   :root{
@@ -12,71 +12,71 @@
     --purple:#6C63FF;--mint:#43E97B;--yellow:#F7E20D;
     --sidebar-w:260px;
   }
-  html{scroll-behavior:smooth;font-size:18px}
+  html{scroll-behavior:smooth;font-size:16px}
   body{background:var(--bg);color:var(--text);font-family:'Pretendard',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.7;overflow-x:hidden}
 
-  /* ?? scroll progress ?? */
+  /* ── scroll progress ── */
   #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--mint));z-index:9999;transition:width .15s}
 
-  /* ?? sidebar ?? */
+  /* ── sidebar ── */
   .sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:900;transition:transform .3s}
   .sidebar-header{padding:24px 20px 16px;border-bottom:1px solid var(--border)}
-  .sidebar-header h2{font-size:17px;font-weight:700;color:var(--purple);letter-spacing:-.3px}
-  .sidebar-header p{font-size:13px;color:var(--text-dim);margin-top:4px}
+  .sidebar-header h2{font-size:15px;font-weight:700;color:var(--purple);letter-spacing:-.3px}
+  .sidebar-header p{font-size:11px;color:var(--text-dim);margin-top:4px}
   .sidebar-nav{flex:1;overflow-y:auto;padding:12px 0}
-  .sidebar-nav a{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text-dim);text-decoration:none;font-size:15px;transition:all .2s;border-left:3px solid transparent}
+  .sidebar-nav a{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text-dim);text-decoration:none;font-size:13px;transition:all .2s;border-left:3px solid transparent}
   .sidebar-nav a:hover{color:var(--text);background:var(--surface2)}
   .sidebar-nav a.active{color:var(--purple);border-left-color:var(--purple);background:rgba(108,99,255,.08);font-weight:600}
   .sidebar-nav .nav-badge{width:22px;height:22px;border-radius:6px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
   .sidebar-nav a.active .nav-badge{background:var(--purple);color:#fff}
   .sidebar-nav a .nav-break{display:inline-block;font-size:11px;color:var(--yellow);margin-left:auto;opacity:.8}
 
-  /* ?? hamburger ?? */
+  /* ── hamburger ── */
   .hamburger{display:none;position:fixed;top:14px;left:14px;z-index:950;width:40px;height:40px;border-radius:10px;background:var(--surface);border:1px solid var(--border);cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
   .hamburger span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
 
-  /* ?? main ?? */
+  /* ── main ── */
   .main{margin-left:var(--sidebar-w);min-height:100vh;padding:0 0 80px}
   .main-inner{max-width:820px;margin:0 auto;padding:48px 32px}
 
-  /* ?? hero ?? */
+  /* ── hero ── */
   .hero{text-align:center;padding:64px 0 48px}
   .hero-badge{display:inline-block;padding:6px 16px;border-radius:20px;background:rgba(108,99,255,.12);color:var(--purple);font-size:12px;font-weight:600;margin-bottom:16px}
   .hero h1{font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.25;letter-spacing:-.5px}
   .hero h1 .grad{background:linear-gradient(135deg,var(--purple),var(--mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-  .hero p{margin-top:12px;color:var(--text-dim);font-size:17px;max-width:580px;margin-left:auto;margin-right:auto}
+  .hero p{margin-top:12px;color:var(--text-dim);font-size:15px;max-width:520px;margin-left:auto;margin-right:auto}
 
-  /* ?? section ?? */
+  /* ── section ── */
   .section{padding:56px 0 40px}
   .section-head{display:flex;align-items:center;gap:14px;margin-bottom:28px}
   .section-num{width:36px;height:36px;border-radius:10px;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0}
-  .section-title{font-size:26px;font-weight:700;letter-spacing:-.3px}
-  .section-time{margin-left:auto;font-size:14px;color:var(--text-dim);background:var(--surface2);padding:4px 12px;border-radius:8px;white-space:nowrap}
+  .section-title{font-size:22px;font-weight:700;letter-spacing:-.3px}
+  .section-time{margin-left:auto;font-size:12px;color:var(--text-dim);background:var(--surface2);padding:4px 12px;border-radius:8px;white-space:nowrap}
 
-  /* ?? key message ?? */
-  .key-msg{border:1.5px solid var(--purple);border-radius:12px;padding:18px 22px;margin-bottom:24px;background:rgba(108,99,255,.05);font-size:17px;line-height:1.8}
+  /* ── key message ── */
+  .key-msg{border:1.5px solid var(--purple);border-radius:12px;padding:18px 22px;margin-bottom:24px;background:rgba(108,99,255,.05);font-size:15px;line-height:1.7}
   .key-msg strong{color:var(--purple)}
 
-  /* ?? checklist ?? */
+  /* ── checklist ── */
   .checklist{list-style:none;margin-bottom:24px}
-  .checklist li{position:relative;padding:8px 0 8px 32px;font-size:16px;color:var(--text-dim)}
+  .checklist li{position:relative;padding:8px 0 8px 32px;font-size:14px;color:var(--text-dim)}
   .checklist li::before{content:'';position:absolute;left:0;top:11px;width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);background:var(--surface2)}
 
-  /* ?? prompt box ?? */
+  /* ── prompt box ── */
   .prompt-box{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:24px;overflow:hidden}
   .prompt-box-label{font-size:11px;font-weight:700;color:var(--mint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-  .prompt-box pre{white-space:pre-wrap;word-break:break-word;font-family:'Fira Code',monospace;font-size:15px;line-height:1.7;color:var(--text)}
+  .prompt-box pre{white-space:pre-wrap;word-break:break-word;font-family:'Fira Code',monospace;font-size:13px;line-height:1.7;color:var(--text)}
   .copy-btn{position:absolute;top:14px;right:14px;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text-dim);font-size:12px;cursor:pointer;transition:all .2s}
   .copy-btn:hover{border-color:var(--purple);color:var(--purple)}
   .copy-btn.copied{border-color:var(--mint);color:var(--mint)}
 
-  /* ?? tool links ?? */
+  /* ── tool links ── */
   .tool-links{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-  .tool-link{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);text-decoration:none;font-size:14px;transition:all .2s}
+  .tool-link{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);text-decoration:none;font-size:12px;transition:all .2s}
   .tool-link:hover{border-color:var(--purple);color:var(--text)}
   .tool-link .dot{width:6px;height:6px;border-radius:50%;background:var(--mint)}
 
-  /* ?? timetable ?? */
+  /* ── timetable ── */
   .timetable{margin:32px 0}
   .tt-row{display:flex;align-items:stretch;min-height:48px}
   .tt-time{width:120px;flex-shrink:0;font-size:12px;color:var(--text-dim);padding:12px 0;text-align:right;padding-right:20px}
@@ -84,11 +84,11 @@
   .tt-line::before{content:'';position:absolute;top:0;bottom:0;width:2px;background:var(--border)}
   .tt-dot{width:10px;height:10px;border-radius:50%;background:var(--purple);position:relative;z-index:1;margin-top:15px;flex-shrink:0}
   .tt-row.break .tt-dot{background:var(--yellow)}
-  .tt-content{flex:1;padding:10px 0 10px 16px;font-size:16px;display:flex;align-items:center;gap:10px}
+  .tt-content{flex:1;padding:10px 0 10px 16px;font-size:14px;display:flex;align-items:center;gap:10px}
   .tt-dur{font-size:11px;color:var(--text-dim);background:var(--surface2);padding:2px 10px;border-radius:6px;white-space:nowrap}
   .tt-row.break .tt-content{color:var(--yellow);font-style:italic}
 
-  /* ?? diagram ?? */
+  /* ── diagram ── */
   .diagram{text-align:center;padding:40px 0}
   .diagram-center{display:inline-flex;flex-direction:column;align-items:center;gap:16px}
   .diagram-source{background:var(--purple);color:#fff;padding:14px 28px;border-radius:14px;font-weight:700;font-size:16px}
@@ -101,7 +101,7 @@
   .diagram-out:nth-child(3){border-color:var(--yellow);color:var(--yellow)}
   .diagram-out:nth-child(4){border-color:#FF6B8A;color:#FF6B8A}
 
-  /* ?? tools table ?? */
+  /* ── tools table ── */
   .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:24px 0}
   .tool-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;transition:border-color .2s}
   .tool-card:hover{border-color:var(--purple)}
@@ -110,7 +110,7 @@
   .tool-card a{font-size:12px;color:var(--purple);text-decoration:none}
   .tool-card a:hover{text-decoration:underline}
 
-  /* ?? CTA ?? */
+  /* ── CTA ── */
   .cta-section{text-align:center;padding:48px 0}
   .cta-section h2{font-size:26px;font-weight:800;margin-bottom:8px}
   .cta-section p{color:var(--text-dim);font-size:14px;margin-bottom:28px}
@@ -121,10 +121,10 @@
   .cta-btn.secondary{background:var(--surface);border:1px solid var(--border);color:var(--text)}
   .cta-btn.secondary:hover{border-color:var(--purple);transform:translateY(-2px)}
 
-  /* ?? divider ?? */
+  /* ── divider ── */
   .divider{height:1px;background:var(--border);margin:40px 0}
 
-  /* ?? responsive ?? */
+  /* ── responsive ── */
   @media(max-width:768px){
     .sidebar{transform:translateX(-100%)}
     .sidebar.open{transform:translateX(0)}
@@ -149,33 +149,32 @@
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
 <!-- Hamburger -->
-<button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="硫붾돱">
+<button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="메뉴">
   <span></span><span></span><span></span>
 </button>
 
 <!-- Sidebar -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <h2>?뱲 NotebookLM 媛뺤쓽 媛?대뱶</h2>
-    <p>?먯냼??硫?곗쑀利??뚰겕??쨌 3?쒓컙 20遺?/p>
+    <h2>📘 NotebookLM 강의 가이드</h2>
+    <p>원소스 멀티유즈 워크숍 · 3시간 20분</p>
   </div>
   <nav class="sidebar-nav">
-    <a href="#s1" data-section="s1"><span class="nav-badge">1</span>媛뺤궗 ?뚭컻</a>
-    <a href="#s2" data-section="s2"><span class="nav-badge">2</span>NotebookLM ?뚭컻</a>
+    <a href="#s1" data-section="s1"><span class="nav-badge">1</span>강사 소개</a>
+    <a href="#s2" data-section="s2"><span class="nav-badge">2</span>NotebookLM 소개</a>
     <a href="#s3" data-section="s3"><span class="nav-badge">3</span>Grok Deep Research</a>
-    <a href="#s4" data-section="s4"><span class="nav-badge">4</span>?좏뒠釉?留곹겕 ?뚯뒪 ?낅젰</a>
-    <a href="#s5" data-section="s5"><span class="nav-badge">5</span>?ㅻ뵒???ㅻ쾭酉??앹꽦</a>
-    <a href="#s6" data-section="s6"><span class="nav-badge">6</span>?곸긽 ?쒖옉 (Vrew+CapCut)</a>
-    <a href="#break" data-section="break"><span class="nav-badge" style="background:var(--yellow);color:#000">??/span>?댁떇<span class="nav-break">15遺?/span></a>
-    <a href="#s7" data-section="s7"><span class="nav-badge">7</span>?붿옄???덊띁?곗뒪 + HEX</a>
-    <a href="#s8" data-section="s8"><span class="nav-badge">8</span>PPT ?щ씪?대뱶 ?먮룞 ?앹꽦</a>
-    <a href="#s9" data-section="s9"><span class="nav-badge">9</span>?명룷洹몃옒????移대뱶?댁뒪</a>
-    <a href="#s10" data-section="s10"><span class="nav-badge">10</span>留덈Т由?+ CTA</a>
-    <a href="#pitch-titan" data-section="pitch-titan"><span class="nav-badge" style="background:var(--yellow);color:#000">??/span>?щ씪?대뱶 ?꾨＼?꾪듃</a>
+    <a href="#s4" data-section="s4"><span class="nav-badge">4</span>유튜브 링크 소스 입력</a>
+    <a href="#s5" data-section="s5"><span class="nav-badge">5</span>오디오 오버뷰 생성</a>
+    <a href="#s6" data-section="s6"><span class="nav-badge">6</span>영상 제작 (Brue+CapCut)</a>
+    <a href="#break" data-section="break"><span class="nav-badge" style="background:var(--yellow);color:#000">☕</span>휴식<span class="nav-break">15분</span></a>
+    <a href="#s7" data-section="s7"><span class="nav-badge">7</span>디자인 레퍼런스 + HEX</a>
+    <a href="#s8" data-section="s8"><span class="nav-badge">8</span>PPT 슬라이드 자동 생성</a>
+    <a href="#s9" data-section="s9"><span class="nav-badge">9</span>인포그래픽 → 카드뉴스</a>
+    <a href="#s10" data-section="s10"><span class="nav-badge">10</span>마무리 + CTA</a>
     <div style="height:1px;background:var(--border);margin:12px 20px"></div>
-    <a href="#timetable" data-section="timetable"><span class="nav-badge" style="font-size:10px">??/span>??꾪뀒?대툝</a>
-    <a href="#tools-all" data-section="tools-all"><span class="nav-badge" style="font-size:10px">?썱</span>?꾧뎄 紐⑥쓬</a>
-    <a href="#diagram" data-section="diagram"><span class="nav-badge" style="font-size:10px">?봽</span>?먯냼??硫?곗쑀利?/a>
+    <a href="#timetable" data-section="timetable"><span class="nav-badge" style="font-size:10px">⏱</span>타임테이블</a>
+    <a href="#tools-all" data-section="tools-all"><span class="nav-badge" style="font-size:10px">🛠</span>도구 모음</a>
+    <a href="#diagram" data-section="diagram"><span class="nav-badge" style="font-size:10px">🔄</span>원소스 멀티유즈</a>
   </nav>
 </aside>
 
@@ -185,28 +184,28 @@
 
     <!-- Hero -->
     <div class="hero">
-      <span class="hero-badge">?대툕?덉씤 AI ?뚰겕??/span>
-      <h1>NotebookLM?쇰줈 留뚮뱶??br><span class="grad">?먯냼??硫?곗쑀利?/span> 肄섑뀗痢?/h1>
-      <p>?먮즺 1媛쒕줈 ?잛틦?ㅽ듃 쨌 ?곸긽 쨌 PPT 쨌 移대뱶?댁뒪源뚯? ??AI ?꾧뎄 ?쒖슜 ?ㅼ뒿 媛?대뱶</p>
+      <span class="hero-badge">이브레인 AI 워크숍</span>
+      <h1>NotebookLM으로 만드는<br><span class="grad">원소스 멀티유즈</span> 콘텐츠</h1>
+      <p>자료 1개로 팟캐스트 · 영상 · PPT · 카드뉴스까지 — AI 도구 활용 실습 가이드</p>
     </div>
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Section 1 ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Section 1 ════════════ -->
     <div class="section" id="s1">
       <div class="section-head">
         <div class="section-num">1</div>
-        <div class="section-title">媛뺤궗 ?뚭컻</div>
-        <span class="section-time">??10遺?/span>
+        <div class="section-title">강사 소개</div>
+        <span class="section-time">⏱ 10분</span>
       </div>
       <div class="key-msg">
-        <strong>?듭떖:</strong> ?대툕?덉씤 AI 媛뺤궗瑜??뚭컻?섍퀬, ?ㅻ뒛 ?섏뾽???꾩껜 ?먮쫫怨?紐⑺몴瑜??뺤씤?⑸땲??
+        <strong>핵심:</strong> 이브레인 AI 강사를 소개하고, 오늘 수업의 전체 흐름과 목표를 확인합니다.
       </div>
       <ul class="checklist">
-        <li>媛뺤쓽 媛?대뱶 ?섏씠吏(???섏씠吏) ?닿린 ?뺤씤</li>
-        <li>?ㅻ뒛 諛곗슱 10?④퀎 ?먮쫫 ?묒뼱蹂닿린</li>
-        <li>理쒖쥌 ?곗텧臾?4醫??잛틦?ㅽ듃, ?곸긽, PPT, 移대뱶?댁뒪) 誘몃━蹂닿린</li>
-        <li>?ㅼ뒿???꾩슂??Google 怨꾩젙 濡쒓렇???뺤씤</li>
+        <li>강의 가이드 페이지(이 페이지) 열기 확인</li>
+        <li>오늘 배울 10단계 흐름 훑어보기</li>
+        <li>최종 산출물 4종(팟캐스트, 영상, PPT, 카드뉴스) 미리보기</li>
+        <li>실습에 필요한 Google 계정 로그인 확인</li>
       </ul>
       <div class="tool-links">
         <a class="tool-link" href="https://notebooklm.google.com" target="_blank"><span class="dot"></span>NotebookLM</a>
@@ -215,22 +214,22 @@
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Section 2 ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Section 2 ════════════ -->
     <div class="section" id="s2">
       <div class="section-head">
         <div class="section-num">2</div>
-        <div class="section-title">NotebookLM ?뚭컻</div>
-        <span class="section-time">??15遺?/span>
+        <div class="section-title">NotebookLM 소개</div>
+        <span class="section-time">⏱ 15분</span>
       </div>
       <div class="key-msg">
-        <strong>?듭떖:</strong> NotebookLM? Google??留뚮뱺 AI 由ъ꽌移??꾧뎄?낅땲?? ?뚯뒪瑜??щ━硫?AI媛 遺꾩꽍쨌?붿빟쨌吏덉쓽?묐떟???댁＜怨? ?ㅻ뵒???ㅻ쾭酉곗? ?명룷洹몃옒?쎄퉴吏 ?먮룞 ?앹꽦?⑸땲??
+        <strong>핵심:</strong> NotebookLM은 Google이 만든 AI 리서치 도구입니다. 소스를 올리면 AI가 분석·요약·질의응답을 해주고, 오디오 오버뷰와 인포그래픽까지 자동 생성합니다.
       </div>
       <ul class="checklist">
-        <li>NotebookLM ?묒냽 (notebooklm.google.com)</li>
-        <li>???명듃遺??앹꽦</li>
-        <li>?뚯뒪 ?낅줈??諛⑹떇 ?뺤씤 (PDF, ?띿뒪?? URL, ?좏뒠釉?留곹겕 ??</li>
-        <li>AI 梨꾪똿 ?⑤꼸 ?ъ슜?대낫湲?/li>
-        <li>?ㅻ뵒???ㅻ쾭酉걔룹씤?ш렇?섑뵿 湲곕뒫 ?꾩튂 ?뺤씤</li>
+        <li>NotebookLM 접속 (notebooklm.google.com)</li>
+        <li>새 노트북 생성</li>
+        <li>소스 업로드 방식 확인 (PDF, 텍스트, URL, 유튜브 링크 등)</li>
+        <li>AI 채팅 패널 사용해보기</li>
+        <li>오디오 오버뷰·인포그래픽 기능 위치 확인</li>
       </ul>
       <div class="tool-links">
         <a class="tool-link" href="https://notebooklm.google.com" target="_blank"><span class="dot"></span>NotebookLM</a>
@@ -239,29 +238,29 @@
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Section 3 ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Section 3 ════════════ -->
     <div class="section" id="s3">
       <div class="section-head">
         <div class="section-num">3</div>
-        <div class="section-title">?먮즺議곗궗 ??Grok Deep Research</div>
-        <span class="section-time">??20遺?/span>
+        <div class="section-title">자료조사 — Grok Deep Research</div>
+        <span class="section-time">⏱ 20분</span>
       </div>
       <div class="key-msg">
-        <strong>?듭떖:</strong> Grok???λ━?쒖튂 湲곕뒫?쇰줈 肄섑뀗痢?二쇱젣??????몃젋?? FAQ, ?ㅼ썙?쒕? 鍮좊Ⅴ寃?議곗궗?⑸땲?? ???먮즺媛 ?댄썑 紐⑤뱺 肄섑뀗痢좎쓽 ?먯옱猷뚭? ?⑸땲??
+        <strong>핵심:</strong> Grok의 딥리서치 기능으로 콘텐츠 주제에 대한 트렌드, FAQ, 키워드를 빠르게 조사합니다. 이 자료가 이후 모든 콘텐츠의 원재료가 됩니다.
       </div>
       <ul class="checklist">
-        <li>Grok (grok.com) ?묒냽</li>
-        <li>肄섑뀗痢?二쇱젣 ?좎젙</li>
-        <li>?꾨옒 ?꾨＼?꾪듃瑜??낅젰?섏뿬 ?λ━?쒖튂 ?ㅽ뻾</li>
-        <li>寃곌낵瑜??띿뒪???뚯씪濡?????먮뒗 蹂듭궗</li>
-        <li>??ν븳 ?먮즺瑜?NotebookLM ?뚯뒪濡??낅줈??/li>
+        <li>Grok (grok.com) 접속</li>
+        <li>콘텐츠 주제 선정</li>
+        <li>아래 프롬프트를 입력하여 딥리서치 실행</li>
+        <li>결과를 텍스트 파일로 저장 또는 복사</li>
+        <li>저장한 자료를 NotebookLM 소스로 업로드</li>
       </ul>
       <div class="prompt-box">
-        <span class="prompt-box-label">?뮠 Grok ?λ━?쒖튂 ?꾨＼?꾪듃</span>
-        <button class="copy-btn" onclick="copyPrompt(this)">蹂듭궗</button>
-        <pre>[二쇱젣] 愿???좏뒠釉?肄섑뀗痢좊? 湲고쉷?섎젮怨???
-理쒖떊 ?몃젋?? ?먯＜ 臾삳뒗 吏덈Ц, 愿???ㅼ썙?쒕? 遺꾩꽍?댁쨾.
-?ㅼ떆 蹂닿린/?댁뒪/?듦퀎 ?먮즺???ы븿?댁꽌 ?뺣━?댁쨾.</pre>
+        <span class="prompt-box-label">💬 Grok 딥리서치 프롬프트</span>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        <pre>[주제] 관련 유튜브 콘텐츠를 기획하려고 해.
+최신 트렌드, 자주 묻는 질문, 관련 키워드를 분석해줘.
+다시 보기/뉴스/통계 자료도 포함해서 정리해줘.</pre>
       </div>
       <div class="tool-links">
         <a class="tool-link" href="https://grok.com" target="_blank"><span class="dot"></span>Grok</a>
@@ -271,22 +270,22 @@
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Section 4 ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Section 4 ════════════ -->
     <div class="section" id="s4">
       <div class="section-head">
         <div class="section-num">4</div>
-        <div class="section-title">?좏뒠釉?留곹겕 ?뚯뒪 ?낅젰</div>
-        <span class="section-time">??10遺?/span>
+        <div class="section-title">유튜브 링크 소스 입력</div>
+        <span class="section-time">⏱ 10분</span>
       </div>
       <div class="key-msg">
-        <strong>?듭떖:</strong> NotebookLM???좏뒠釉?留곹겕瑜??뚯뒪濡?異붽??섎㈃, AI媛 ?곸긽 ?댁슜???먮룞 遺꾩꽍?⑸땲?? 二쇱젣? 愿?⑤맂 ?좏뒠釉??곸긽 2~3媛쒕? ?뚯뒪濡??깅줉?섏꽭??
+        <strong>핵심:</strong> NotebookLM에 유튜브 링크를 소스로 추가하면, AI가 영상 내용을 자동 분석합니다. 주제와 관련된 유튜브 영상 2~3개를 소스로 등록하세요.
       </div>
       <ul class="checklist">
-        <li>二쇱젣? 愿?⑤맂 ?좏뒠釉??곸긽 2~3媛?URL 以鍮?/li>
-        <li>NotebookLM ??"?뚯뒪 異붽?" ??"YouTube" ?좏깮</li>
-        <li>媛??곸긽 URL 遺숈뿬?ｊ린?섏뿬 ?뚯뒪 ?깅줉</li>
-        <li>AI媛 ?곸긽 ?댁슜???붿빟??寃??뺤씤</li>
-        <li>Grok 由ъ꽌移??먮즺? ?좏뒠釉??뚯뒪 ?④퍡 ?쒖슜 媛???뺤씤</li>
+        <li>주제와 관련된 유튜브 영상 2~3개 URL 준비</li>
+        <li>NotebookLM → "소스 추가" → "YouTube" 선택</li>
+        <li>각 영상 URL 붙여넣기하여 소스 등록</li>
+        <li>AI가 영상 내용을 요약한 것 확인</li>
+        <li>Grok 리서치 자료와 유튜브 소스 함께 활용 가능 확인</li>
       </ul>
       <div class="tool-links">
         <a class="tool-link" href="https://notebooklm.google.com" target="_blank"><span class="dot"></span>NotebookLM</a>
@@ -295,22 +294,22 @@
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Section 5 ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Section 5 ════════════ -->
     <div class="section" id="s5">
       <div class="section-head">
         <div class="section-num">5</div>
-        <div class="section-title">?ㅻ뵒???ㅻ쾭酉??앹꽦</div>
-        <span class="section-time">??20遺?/span>
+        <div class="section-title">오디오 오버뷰 생성</div>
+        <span class="section-time">⏱ 20분</span>
       </div>
       <div class="key-msg">
-        <strong>?듭떖:</strong> NotebookLM???ㅻ뵒???ㅻ쾭酉곕뒗 ?뚯뒪瑜?湲곕컲?쇰줈 ??紐낆쓽 AI ?몄뒪?멸? ??뷀븯???잛틦?ㅽ듃 ?뺤떇 ?ㅻ뵒?ㅻ? ?먮룞 ?앹꽦?⑸땲?? ?앹꽦???ㅻ뵒?ㅻ뒗 ?잛틦?ㅽ듃쨌?곸긽???먮낯 ?뚯뒪濡??쒖슜?⑸땲??
+        <strong>핵심:</strong> NotebookLM의 오디오 오버뷰는 소스를 기반으로 두 명의 AI 호스트가 대화하는 팟캐스트 형식 오디오를 자동 생성합니다. 생성된 오디오는 팟캐스트·영상의 원본 소스로 활용합니다.
       </div>
       <ul class="checklist">
-        <li>NotebookLM ?명듃遺곸뿉??"?ㅻ뵒???ㅻ쾭酉? ?대┃</li>
-        <li>?ъ슜???뚯뒪 ?좏깮 (Grok 由ъ꽌移?+ ?좏뒠釉??뚯뒪)</li>
-        <li>"?앹꽦" 踰꾪듉 ?대┃ ???ㅻ뵒???앹꽦 ?湲?(3~5遺?</li>
-        <li>?앹꽦???ㅻ뵒??誘몃━?ｊ린</li>
-        <li>?ㅻ뵒???뚯씪 ?ㅼ슫濡쒕뱶</li>
+        <li>NotebookLM 노트북에서 "오디오 오버뷰" 클릭</li>
+        <li>사용할 소스 선택 (Grok 리서치 + 유튜브 소스)</li>
+        <li>"생성" 버튼 클릭 → 오디오 생성 대기 (3~5분)</li>
+        <li>생성된 오디오 미리듣기</li>
+        <li>오디오 파일 다운로드</li>
       </ul>
       <div class="tool-links">
         <a class="tool-link" href="https://notebooklm.google.com" target="_blank"><span class="dot"></span>NotebookLM</a>
@@ -319,24 +318,24 @@
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Section 6 ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Section 6 ════════════ -->
     <div class="section" id="s6">
       <div class="section-head">
         <div class="section-num">6</div>
-        <div class="section-title">?ㅻ뵒???ㅻ쾭酉??쒖슜 ???곸긽 ?쒖옉 (Vrew + CapCut)</div>
-        <span class="section-time">??25遺?/span>
+        <div class="section-title">오디오 오버뷰 활용 — 영상 제작 (Brue + CapCut)</div>
+        <span class="section-time">⏱ 25분</span>
       </div>
       <div class="key-msg">
-        <strong>?듭떖:</strong> ?ㅻ뵒???ㅻ쾭酉곕? ?곸긽?쇰줈 蹂?섑빀?덈떎. Vrew濡??ㅻ뵒?ㅼ뿉 留욌뒗 ?곸긽 ?뚯뒪瑜??앹꽦?섍퀬, CapCut?쇰줈 ?먮쭑쨌?몄쭛源뚯? ?꾩꽦?⑸땲??
+        <strong>핵심:</strong> 오디오 오버뷰를 영상으로 변환합니다. Brue로 오디오에 맞는 영상 소스를 생성하고, CapCut으로 자막·편집까지 완성합니다.
       </div>
       <ul class="checklist">
-        <li>?ㅼ슫濡쒕뱶???ㅻ뵒???뚯씪 以鍮?/li>
-        <li>Vrew?먯꽌 ?ㅻ뵒??湲곕컲 ?곸긽 ?뚯뒪 ?앹꽦</li>
-        <li>CapCut ?묒냽 ?????꾨줈?앺듃 ?앹꽦</li>
-        <li>?곸긽 ?뚯뒪 + ?ㅻ뵒???뚯씪 ??꾨씪?몄뿉 諛곗튂</li>
-        <li>CapCut ?먮룞 ?먮쭑 湲곕뒫 ?쒖꽦??/li>
-        <li>?먮쭑 ?ㅽ??셋룻룿??議곗젙</li>
-        <li>理쒖쥌 ?곸긽 ?대낫?닿린</li>
+        <li>다운로드한 오디오 파일 준비</li>
+        <li>Brue에서 오디오 기반 영상 소스 생성</li>
+        <li>CapCut 접속 → 새 프로젝트 생성</li>
+        <li>영상 소스 + 오디오 파일 타임라인에 배치</li>
+        <li>CapCut 자동 자막 기능 활성화</li>
+        <li>자막 스타일·폰트 조정</li>
+        <li>최종 영상 내보내기</li>
       </ul>
       <div class="tool-links">
         <a class="tool-link" href="https://capcut.com" target="_blank"><span class="dot"></span>CapCut</a>
@@ -345,81 +344,83 @@
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Break ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Break ════════════ -->
     <div class="section" id="break" style="text-align:center;padding:40px 0">
       <div style="display:inline-block;padding:16px 32px;border-radius:14px;background:rgba(247,226,13,.08);border:1.5px solid var(--yellow)">
-        <span style="font-size:28px">??/span>
-        <div style="font-size:18px;font-weight:700;color:var(--yellow);margin-top:8px">?댁떇 ?쒓컙</div>
-        <div style="font-size:13px;color:var(--text-dim);margin-top:4px">15遺?쨌 01:40 ~ 01:55</div>
+        <span style="font-size:28px">☕</span>
+        <div style="font-size:18px;font-weight:700;color:var(--yellow);margin-top:8px">휴식 시간</div>
+        <div style="font-size:13px;color:var(--text-dim);margin-top:4px">15분 · 01:40 ~ 01:55</div>
       </div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Section 7 ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Section 7 ════════════ -->
     <div class="section" id="s7">
       <div class="section-head">
         <div class="section-num">7</div>
-        <div class="section-title">?붿옄???덊띁?곗뒪 ?섏쭛 + Gemini HEX 異붿텧</div>
-        <span class="section-time">??20遺?/span>
+        <div class="section-title">디자인 레퍼런스 수집 + Gemini HEX 추출</div>
+        <span class="section-time">⏱ 20분</span>
       </div>
       <div class="key-msg">
-        <strong>?듭떖:</strong> Behance쨌Dribbble?먯꽌 ?붿옄???덊띁?곗뒪瑜?李얘퀬, GoFullPage濡?罹≪쿂???? Gemini???대?吏瑜??ｌ뼱 HEX ?됱긽 肄붾뱶瑜??먮룞 異붿텧?⑸땲?? ???됱긽? PPT? 移대뱶?댁뒪???듭씪?섍쾶 ?곸슜?⑸땲??
+        <strong>핵심:</strong> Behance·Dribbble에서 디자인 레퍼런스를 찾고, GoFullPage로 캡처한 뒤, Gemini에 이미지를 넣어 HEX 색상 코드를 자동 추출합니다. 이 색상은 PPT와 카드뉴스에 통일되게 적용됩니다.
       </div>
       <ul class="checklist">
-        <li>Behance ?먮뒗 Dribbble?먯꽌 二쇱젣??留욌뒗 ?붿옄???덊띁?곗뒪 寃??/li>
-        <li>留덉쓬???쒕뒗 ?덊띁?곗뒪 2~3媛??좎젙</li>
-        <li>GoFullPage (?щ＼ ?뺤옣?꾨줈洹몃옩)濡??꾩껜 ?붾㈃ 罹≪쿂</li>
-        <li>Gemini (gemini.google.com) ?묒냽</li>
-        <li>罹≪쿂 ?대?吏 ?낅줈??+ ?꾨옒 ?꾨＼?꾪듃 ?낅젰</li>
-        <li>異붿텧??HEX 肄붾뱶 硫붾え (諛곌꼍??/ 媛뺤“??/ ?띿뒪???됱긽)</li>
+        <li>Behance 또는 Dribbble에서 주제에 맞는 디자인 레퍼런스 검색</li>
+        <li>마음에 드는 레퍼런스 2~3개 선정</li>
+        <li>GoFullPage (크롬 확장프로그램)로 전체 화면 캡처</li>
+        <li>Gemini (gemini.google.com) 접속</li>
+        <li>캡처 이미지 업로드 + 아래 프롬프트 입력</li>
+        <li>추출된 HEX 코드 메모 (배경색 / 강조색 / 텍스트 색상)</li>
       </ul>
       <div class="prompt-box">
-        <span class="prompt-box-label">?뮠 Gemini HEX 異붿텧 ?꾨＼?꾪듃</span>
-        <button class="copy-btn" onclick="copyPrompt(this)">蹂듭궗</button>
-        <pre>???대?吏??二쇱슂 ?됱긽??HEX 肄붾뱶濡??뚮젮以?
-諛곌꼍?? 媛뺤“?? ?띿뒪???됱긽??援щ텇?댁꽌 媛?3媛쒖뵫 異붿텧?댁쨾.
+        <span class="prompt-box-label">💬 Gemini HEX 추출 프롬프트</span>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        <pre>이 이미지의 주요 색상을 HEX 코드로 알려줘.
+배경색, 강조색, 텍스트 색상을 구분해서 각 3개씩 추출해줘.
 
-?꾩껜 ?꾨＼?꾪듃: https://share.note.sx/tqcwd8uf</pre>
+전체 프롬프트: https://share.note.sx/tqcwd8uf</pre>
       </div>
       <div class="tool-links">
         <a class="tool-link" href="https://gemini.google.com" target="_blank"><span class="dot"></span>Gemini</a>
         <a class="tool-link" href="https://behance.net" target="_blank"><span class="dot"></span>Behance</a>
         <a class="tool-link" href="https://dribbble.com" target="_blank"><span class="dot"></span>Dribbble</a>
-        <a class="tool-link" href="#" onclick="return false"><span class="dot" style="background:var(--yellow)"></span>GoFullPage (?щ＼ ?뺤옣)</a>
+        <a class="tool-link" href="#" onclick="return false"><span class="dot" style="background:var(--yellow)"></span>GoFullPage (크롬 확장)</a>
       </div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Section 8 ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Section 8 ════════════ -->
     <div class="section" id="s8">
       <div class="section-head">
         <div class="section-num">8</div>
-        <div class="section-title">PPT ?щ씪?대뱶 ?먮룞 ?앹꽦</div>
-        <span class="section-time">??30遺?/span>
+        <div class="section-title">PPT 슬라이드 자동 생성</div>
+        <span class="section-time">⏱ 30분</span>
       </div>
       <div class="key-msg">
-        <strong>?듭떖:</strong> NotebookLM?먯꽌 ?뺣━???명듃? ?욎꽌 異붿텧??HEX ?됱긽??議고빀?섏뿬, Gemini?먭쾶 Google Slides ?꾨젅?좏뀒?댁뀡???먮룞 ?앹꽦?섎룄濡??붿껌?⑸땲??
+        <strong>핵심:</strong> NotebookLM에서 정리한 노트와 앞서 추출한 HEX 색상을 조합하여, Gemini에게 Google Slides 프레젠테이션을 자동 생성하도록 요청합니다.
       </div>
       <ul class="checklist">
-        <li>NotebookLM ?명듃?먯꽌 ?듭떖 ?댁슜 蹂듭궗</li>
-        <li>?뱀뀡 7?먯꽌 異붿텧??HEX 肄붾뱶 以鍮?/li>
-        <li>Gemini ?묒냽 ???꾨옒 ?꾨＼?꾪듃???댁슜 梨꾩썙 ?ｊ린</li>
-        <li>?앹꽦??Google Slides ?뺤씤</li>
-        <li>?щ씪?대뱶 ?쒖꽌쨌?댁슜 ?섏젙</li>
-        <li>?붿옄??誘몄꽭 議곗젙 (Google Slides?먯꽌)</li>
+        <li>NotebookLM 노트에서 핵심 내용 복사</li>
+        <li>섹션 7에서 추출한 HEX 코드 준비</li>
+        <li>Gemini 접속 → 아래 프롬프트에 내용 채워 넣기</li>
+        <li>생성된 Google Slides 확인</li>
+        <li>슬라이드 순서·내용 수정</li>
+        <li>디자인 미세 조정 (Google Slides에서)</li>
       </ul>
       <div class="prompt-box">
-        <span class="prompt-box-label">?뮠 PPT ?щ씪?대뱶 ?앹꽦 ?꾨＼?꾪듃</span>
-        <button class="copy-btn" onclick="copyPrompt(this)">蹂듭궗</button>
-        <pre>?꾨옒 ?댁슜??湲곕컲?쇰줈 Google Slides ?꾨젅?좏뀒?댁뀡??留뚮뱾?댁쨾.
-- 20~40??遺꾨웾
-- ?щ씪?대뱶留덈떎 ?쒕ぉ + ?듭떖 ?ъ씤??3媛?- 媛뺤쓽 ?먮쫫??留욌뒗 ?쒖꽌濡?- 諛곌꼍?? [HEX], 媛뺤“?? [HEX], ?띿뒪?? [HEX]
+        <span class="prompt-box-label">💬 PPT 슬라이드 생성 프롬프트</span>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        <pre>아래 내용을 기반으로 Google Slides 프레젠테이션을 만들어줘.
+- 20~40장 분량
+- 슬라이드마다 제목 + 핵심 포인트 3개
+- 강의 흐름에 맞는 순서로
+- 배경색: [HEX], 강조색: [HEX], 텍스트: [HEX]
 
-[NotebookLM ?명듃 遺숈뿬?ｊ린]
+[NotebookLM 노트 붙여넣기]
 
-?꾩껜 ?꾨＼?꾪듃: https://share.note.sx/qgnbx59w</pre>
+전체 프롬프트: https://share.note.sx/qgnbx59w</pre>
       </div>
       <div class="tool-links">
         <a class="tool-link" href="https://gemini.google.com" target="_blank"><span class="dot"></span>Gemini</a>
@@ -430,30 +431,30 @@
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Section 9 ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Section 9 ════════════ -->
     <div class="section" id="s9">
       <div class="section-head">
         <div class="section-num">9</div>
-        <div class="section-title">?명룷洹몃옒????SNS 移대뱶?댁뒪 諛쒗뻾</div>
-        <span class="section-time">??25遺?/span>
+        <div class="section-title">인포그래픽 → SNS 카드뉴스 발행</div>
+        <span class="section-time">⏱ 25분</span>
       </div>
       <div class="key-msg">
-        <strong>?듭떖:</strong> NotebookLM???명룷洹몃옒??湲곕뒫?쇰줈 ?쒓컖 ?먮즺瑜??앹꽦?섍퀬, AI ?꾨＼?꾪듃濡??몄뒪?洹몃옩 移대뱶?댁뒪 5??援ъ꽦???먮룞 湲고쉷?⑸땲?? Canva濡?理쒖쥌 ?붿옄?몄쓣 ?꾩꽦?⑸땲??
+        <strong>핵심:</strong> NotebookLM의 인포그래픽 기능으로 시각 자료를 생성하고, AI 프롬프트로 인스타그램 카드뉴스 5장 구성을 자동 기획합니다. Canva로 최종 디자인을 완성합니다.
       </div>
       <ul class="checklist">
-        <li>NotebookLM?먯꽌 ?명룷洹몃옒???앹꽦</li>
-        <li>?앹꽦???명룷洹몃옒???ㅼ슫濡쒕뱶</li>
-        <li>?꾨옒 ?꾨＼?꾪듃濡?移대뱶?댁뒪 援ъ꽦 湲고쉷</li>
-        <li>Canva ?묒냽 ???몄뒪?洹몃옩 ?ъ뒪???쒗뵆由??좏깮</li>
-        <li>湲고쉷?덉뿉 ?곕씪 移대뱶?댁뒪 5???쒖옉</li>
-        <li>HEX ?됱긽 肄붾뱶 ?곸슜?섏뿬 ?듭씪媛??좎?</li>
+        <li>NotebookLM에서 인포그래픽 생성</li>
+        <li>생성된 인포그래픽 다운로드</li>
+        <li>아래 프롬프트로 카드뉴스 구성 기획</li>
+        <li>Canva 접속 → 인스타그램 포스트 템플릿 선택</li>
+        <li>기획안에 따라 카드뉴스 5장 제작</li>
+        <li>HEX 색상 코드 적용하여 통일감 유지</li>
       </ul>
       <div class="prompt-box">
-        <span class="prompt-box-label">?뮠 移대뱶?댁뒪 ?꾨＼?꾪듃</span>
-        <button class="copy-btn" onclick="copyPrompt(this)">蹂듭궗</button>
-        <pre>???먮즺瑜??몄뒪?洹몃옩 移대뱶?댁뒪 5?μ쑝濡??섎닠???뺣━?댁쨾.
-媛??λ쭏???쒕ぉ, ?댁슜(2~3以?, ?듭떖 ?ㅼ썙?쒕? ?ы븿?댁쨾.
-媛??μ쓽 ?대?吏 而⑥뀎???④퍡 ?쒖븞?댁쨾.</pre>
+        <span class="prompt-box-label">💬 카드뉴스 프롬프트</span>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        <pre>이 자료를 인스타그램 카드뉴스 5장으로 나눠서 정리해줘.
+각 장마다 제목, 내용(2~3줄), 핵심 키워드를 포함해줘.
+각 장의 이미지 컨셉도 함께 제안해줘.</pre>
       </div>
       <div class="tool-links">
         <a class="tool-link" href="https://notebooklm.google.com" target="_blank"><span class="dot"></span>NotebookLM</a>
@@ -463,129 +464,129 @@
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Section 10 ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Section 10 ════════════ -->
     <div class="section" id="s10">
       <div class="section-head">
         <div class="section-num">10</div>
-        <div class="section-title">留덈Т由?+ CTA</div>
-        <span class="section-time">??10遺?/span>
+        <div class="section-title">마무리 + CTA</div>
+        <span class="section-time">⏱ 10분</span>
       </div>
       <div class="key-msg">
-        <strong>?듭떖:</strong> ?ㅻ뒛 ?ㅼ뒿???꾩껜 ?먮쫫??蹂듭뒿?섍퀬, ?먮즺 1媛쒕줈 4醫?肄섑뀗痢좊? 留뚮뱶??"?먯냼??硫?곗쑀利? ?뚰겕?뚮줈?곕? ?뺣━?⑸땲??
+        <strong>핵심:</strong> 오늘 실습한 전체 흐름을 복습하고, 자료 1개로 4종 콘텐츠를 만드는 "원소스 멀티유즈" 워크플로우를 정리합니다.
       </div>
       <ul class="checklist">
-        <li>?ㅻ뒛 留뚮뱺 ?곗텧臾?4醫??뺤씤 (?잛틦?ㅽ듃, ?곸긽, PPT, 移대뱶?댁뒪)</li>
-        <li>?먯냼??硫?곗쑀利??뚰겕?뚮줈??蹂듭뒿</li>
-        <li>?대툕?덉씤 AI 留덉뒪???⑦궎吏 ?덈궡 ?뺤씤</li>
-        <li>異붽? ?숈뒿 ?먮즺 諛?而ㅻ??덊떚 ?뺤씤</li>
+        <li>오늘 만든 산출물 4종 확인 (팟캐스트, 영상, PPT, 카드뉴스)</li>
+        <li>원소스 멀티유즈 워크플로우 복습</li>
+        <li>이브레인 AI 마스터 패키지 안내 확인</li>
+        <li>추가 학습 자료 및 커뮤니티 확인</li>
       </ul>
       <div class="tool-links">
-        <a class="tool-link" href="https://www.latpeed.com/products/p6-h5" target="_blank"><span class="dot"></span>?대툕?덉씤 AI 留덉뒪???⑦궎吏</a>
-        <a class="tool-link" href="https://www.youtube.com/@aiebrain" target="_blank"><span class="dot"></span>?좏뒠釉?/a>
-        <a class="tool-link" href="https://open.kakao.com/o/gfNHYBwh" target="_blank"><span class="dot"></span>移댁뭅???ㅽ뵂梨꾪똿</a>
+        <a class="tool-link" href="https://www.latpeed.com/products/p6-h5" target="_blank"><span class="dot"></span>이브레인 AI 마스터 패키지</a>
+        <a class="tool-link" href="https://www.youtube.com/@aiebrain" target="_blank"><span class="dot"></span>유튜브</a>
+        <a class="tool-link" href="https://open.kakao.com/o/gfNHYBwh" target="_blank"><span class="dot"></span>카카오 오픈채팅</a>
       </div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Timetable ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Timetable ════════════ -->
     <div class="section" id="timetable">
       <div class="section-head">
-        <div class="section-num" style="background:var(--mint)">??/div>
-        <div class="section-title">??꾪뀒?대툝</div>
-        <span class="section-time">珥?3?쒓컙 20遺?/span>
+        <div class="section-num" style="background:var(--mint)">⏱</div>
+        <div class="section-title">타임테이블</div>
+        <span class="section-time">총 3시간 20분</span>
       </div>
       <div class="timetable">
-        <div class="tt-row"><div class="tt-time">00:00 ~ 00:10</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">媛뺤궗 ?뚭컻<span class="tt-dur">10遺?/span></div></div>
-        <div class="tt-row"><div class="tt-time">00:10 ~ 00:25</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">NotebookLM ?뚭컻<span class="tt-dur">15遺?/span></div></div>
-        <div class="tt-row"><div class="tt-time">00:25 ~ 00:45</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">Grok Deep Research<span class="tt-dur">20遺?/span></div></div>
-        <div class="tt-row"><div class="tt-time">00:45 ~ 00:55</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">?좏뒠釉?留곹겕 ?뚯뒪 ?낅젰<span class="tt-dur">10遺?/span></div></div>
-        <div class="tt-row"><div class="tt-time">00:55 ~ 01:15</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">?ㅻ뵒???ㅻ쾭酉??앹꽦<span class="tt-dur">20遺?/span></div></div>
-        <div class="tt-row"><div class="tt-time">01:15 ~ 01:40</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">?곸긽 ?쒖옉 (Vrew + CapCut)<span class="tt-dur">25遺?/span></div></div>
-        <div class="tt-row break"><div class="tt-time">01:40 ~ 01:55</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">???댁떇<span class="tt-dur">15遺?/span></div></div>
-        <div class="tt-row"><div class="tt-time">01:55 ~ 02:15</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">?붿옄???덊띁?곗뒪 + HEX 異붿텧<span class="tt-dur">20遺?/span></div></div>
-        <div class="tt-row"><div class="tt-time">02:15 ~ 02:45</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">PPT ?щ씪?대뱶 ?먮룞 ?앹꽦<span class="tt-dur">30遺?/span></div></div>
-        <div class="tt-row"><div class="tt-time">02:45 ~ 03:10</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">?명룷洹몃옒????SNS 移대뱶?댁뒪<span class="tt-dur">25遺?/span></div></div>
-        <div class="tt-row"><div class="tt-time">03:10 ~ 03:20</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">留덈Т由?+ CTA<span class="tt-dur">10遺?/span></div></div>
+        <div class="tt-row"><div class="tt-time">00:00 ~ 00:10</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">강사 소개<span class="tt-dur">10분</span></div></div>
+        <div class="tt-row"><div class="tt-time">00:10 ~ 00:25</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">NotebookLM 소개<span class="tt-dur">15분</span></div></div>
+        <div class="tt-row"><div class="tt-time">00:25 ~ 00:45</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">Grok Deep Research<span class="tt-dur">20분</span></div></div>
+        <div class="tt-row"><div class="tt-time">00:45 ~ 00:55</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">유튜브 링크 소스 입력<span class="tt-dur">10분</span></div></div>
+        <div class="tt-row"><div class="tt-time">00:55 ~ 01:15</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">오디오 오버뷰 생성<span class="tt-dur">20분</span></div></div>
+        <div class="tt-row"><div class="tt-time">01:15 ~ 01:40</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">영상 제작 (Brue + CapCut)<span class="tt-dur">25분</span></div></div>
+        <div class="tt-row break"><div class="tt-time">01:40 ~ 01:55</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">☕ 휴식<span class="tt-dur">15분</span></div></div>
+        <div class="tt-row"><div class="tt-time">01:55 ~ 02:15</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">디자인 레퍼런스 + HEX 추출<span class="tt-dur">20분</span></div></div>
+        <div class="tt-row"><div class="tt-time">02:15 ~ 02:45</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">PPT 슬라이드 자동 생성<span class="tt-dur">30분</span></div></div>
+        <div class="tt-row"><div class="tt-time">02:45 ~ 03:10</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">인포그래픽 → SNS 카드뉴스<span class="tt-dur">25분</span></div></div>
+        <div class="tt-row"><div class="tt-time">03:10 ~ 03:20</div><div class="tt-line"><div class="tt-dot"></div></div><div class="tt-content">마무리 + CTA<span class="tt-dur">10분</span></div></div>
       </div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Tools ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Tools ════════════ -->
     <div class="section" id="tools-all">
       <div class="section-head">
-        <div class="section-num" style="background:var(--mint)">?썱</div>
-        <div class="section-title">?ъ슜 ?꾧뎄 紐⑥쓬</div>
+        <div class="section-num" style="background:var(--mint)">🛠</div>
+        <div class="section-title">사용 도구 모음</div>
       </div>
       <div class="tools-grid">
         <div class="tool-card">
           <h4>NotebookLM</h4>
-          <p>?뚯뒪 遺꾩꽍 쨌 ?ㅻ뵒???ㅻ쾭酉?쨌 ?명룷洹몃옒??/p>
-          <a href="https://notebooklm.google.com" target="_blank">notebooklm.google.com ??/a>
+          <p>소스 분석 · 오디오 오버뷰 · 인포그래픽</p>
+          <a href="https://notebooklm.google.com" target="_blank">notebooklm.google.com ↗</a>
         </div>
         <div class="tool-card">
           <h4>Grok</h4>
-          <p>?λ━?쒖튂 쨌 ?몃젋??議곗궗</p>
-          <a href="https://grok.com" target="_blank">grok.com ??/a>
+          <p>딥리서치 · 트렌드 조사</p>
+          <a href="https://grok.com" target="_blank">grok.com ↗</a>
         </div>
         <div class="tool-card">
           <h4>CapCut</h4>
-          <p>?곸긽 ?몄쭛 쨌 ?먮룞 ?먮쭑</p>
-          <a href="https://capcut.com" target="_blank">capcut.com ??/a>
+          <p>영상 편집 · 자동 자막</p>
+          <a href="https://capcut.com" target="_blank">capcut.com ↗</a>
         </div>
         <div class="tool-card">
           <h4>Canva</h4>
-          <p>移대뱶?댁뒪 ?쒖옉</p>
-          <a href="https://canva.com" target="_blank">canva.com ??/a>
+          <p>카드뉴스 제작</p>
+          <a href="https://canva.com" target="_blank">canva.com ↗</a>
         </div>
         <div class="tool-card">
           <h4>Gemini</h4>
-          <p>HEX 異붿텧 쨌 PPT ?앹꽦</p>
-          <a href="https://gemini.google.com" target="_blank">gemini.google.com ??/a>
+          <p>HEX 추출 · PPT 생성</p>
+          <a href="https://gemini.google.com" target="_blank">gemini.google.com ↗</a>
         </div>
         <div class="tool-card">
           <h4>Behance</h4>
-          <p>?붿옄???덊띁?곗뒪</p>
-          <a href="https://behance.net" target="_blank">behance.net ??/a>
+          <p>디자인 레퍼런스</p>
+          <a href="https://behance.net" target="_blank">behance.net ↗</a>
         </div>
         <div class="tool-card">
           <h4>Dribbble</h4>
-          <p>?붿옄???덊띁?곗뒪</p>
-          <a href="https://dribbble.com" target="_blank">dribbble.com ??/a>
+          <p>디자인 레퍼런스</p>
+          <a href="https://dribbble.com" target="_blank">dribbble.com ↗</a>
         </div>
         <div class="tool-card">
           <h4>GoFullPage</h4>
-          <p>?꾩껜 ?붾㈃ 罹≪쿂</p>
-          <a href="https://chrome.google.com/webstore" target="_blank">?щ＼ ?뺤옣?꾨줈洹몃옩 ??/a>
+          <p>전체 화면 캡처</p>
+          <a href="https://chrome.google.com/webstore" target="_blank">크롬 확장프로그램 ↗</a>
         </div>
         <div class="tool-card">
           <h4>Google Slides</h4>
-          <p>PPT ?몄쭛</p>
-          <a href="https://slides.google.com" target="_blank">slides.google.com ??/a>
+          <p>PPT 편집</p>
+          <a href="https://slides.google.com" target="_blank">slides.google.com ↗</a>
         </div>
       </div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 Diagram ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ Diagram ════════════ -->
     <div class="section" id="diagram">
       <div class="section-head">
-        <div class="section-num" style="background:var(--mint)">?봽</div>
-        <div class="section-title">?먯냼??硫?곗쑀利?/div>
+        <div class="section-num" style="background:var(--mint)">🔄</div>
+        <div class="section-title">원소스 멀티유즈</div>
       </div>
       <div class="diagram">
         <div class="diagram-center">
-          <div class="diagram-source">?뱞 ?먮즺 1媛?/div>
-          <div class="diagram-arrow">??/div>
+          <div class="diagram-source">📄 자료 1개</div>
+          <div class="diagram-arrow">↓</div>
           <div class="diagram-hub">NotebookLM</div>
-          <div class="diagram-arrow">??/div>
+          <div class="diagram-arrow">↓</div>
           <div class="diagram-outputs">
-            <div class="diagram-out">?럺 ?잛틦?ㅽ듃</div>
-            <div class="diagram-out">?렗 ?곸긽</div>
-            <div class="diagram-out">?뱤 移대뱶?댁뒪</div>
-            <div class="diagram-out">?뱫 PPT</div>
+            <div class="diagram-out">🎙 팟캐스트</div>
+            <div class="diagram-out">🎬 영상</div>
+            <div class="diagram-out">📊 카드뉴스</div>
+            <div class="diagram-out">📑 PPT</div>
           </div>
         </div>
       </div>
@@ -593,153 +594,33 @@
 
     <div class="divider"></div>
 
-    <!-- ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 CTA ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧 -->
+    <!-- ════════════ CTA ════════════ -->
     <div class="cta-section">
-      <h2>??源딆씠 諛곗슦怨??띕떎硫?</h2>
-      <p>?대툕?덉씤 AI 留덉뒪???⑦궎吏濡??ㅻТ ?쒖슜源뚯? ?댁뼱媛?몄슂</p>
-
-    <!-- ================================================ -->
-    <!-- ?쇱튂??댄깂 ?명듃遺갟M ?щ씪?대뱶 ?꾨＼?꾪듃 ?뱀뀡 -->
-    <!-- ================================================ -->
-    </div>
-
-    <div class="section" id="pitch-titan">
-      <div class="section-head">
-        <div class="section-num" style="background:var(--yellow);color:#000">??/div>
-        <h2 class="section-title">?명듃遺갟M ?щ씪?대뱶 ?꾨＼?꾪듃</h2>
-      </div>
-
-      <div class="key-msg">
-        <strong>3?④퀎 ?꾨줈?몄뒪:</strong> ?붿옄??異붿텧 ??留덉뒪???蹂????щ씪?대뱶 ?뚮뜑留?br>
-        ???꾨＼?꾪듃 ?명듃瑜??쒖꽌?濡??ㅽ뻾?섎㈃ <strong>40??PPT媛 ?먮룞 ?앹꽦</strong>?⑸땲??
-      </div>
-
-      <!-- ?붿옄??李멸퀬 ?ъ씠??-->
-      <h3 style="font-size:18px;font-weight:700;margin:28px 0 12px;color:var(--mint)">???붿옄??李멸퀬???ъ씠??/h3>
-      <div class="tool-links">
-        <a class="tool-link" href="https://www.behance.net/" target="_blank"><span class="dot"></span>Behance</a>
-        <a class="tool-link" href="https://dribbble.com/" target="_blank"><span class="dot"></span>Dribbble</a>
-      </div>
-
-      <!-- GoFullPage -->
-      <h3 style="font-size:18px;font-weight:700;margin:28px 0 12px;color:var(--mint)">??GoFullPage ???щ＼ ?뺤옣 ?꾨줈洹몃옩</h3>
-      <div class="tool-links">
-        <a class="tool-link" href="https://chromewebstore.google.com/detail/gofullpage-full-page-scre/fdpohaocaechififmbbbbbknoalclacl?hl=ko" target="_blank"><span class="dot"></span>GoFullPage ?ㅼ튂?섍린</a>
-      </div>
-
-      <!-- 1?④퀎 -->
-      <h3 style="font-size:18px;font-weight:700;margin:32px 0 12px;color:var(--purple)">??1?④퀎 : ?щ씪?대뱶 ?곷Ц ?붿옄??異붿텧 ?꾨＼?꾪듃</h3>
-      <div class="prompt-box">
-        <div class="prompt-box-label">GEMINI???대?吏? ?④퍡 ?낅젰</div>
-        <button class="copy-btn" onclick="copyPrompt(this)">蹂듭궗</button>
-        <pre>?낅줈?쒗븳 [?대?吏]???붿옄???ㅽ????꾩껜 肄섏뀎?? 而щ윭 HEX肄붾뱶, ?ㅼ븻留ㅻ꼫, 二쇱슂 ?꾪삎 諛?洹몃옒???뱀쭠)???뺣??섍쾶 遺꾩꽍?섏떗?쒖삤.
-
-遺꾩꽍???댁슜??諛뷀깢?쇰줈, NotebookLM???먮룞???쒖뒪???뚮씪誘명꽣??諛붾줈 遺숈뿬?ｌ쓣 ???덈뒗 [Adaptive Presentation Design System] ?뺤떇???곷Ц ?꾨＼?꾪듃(English Prompt)瑜??묒꽦?섏뿬 肄붾뱶釉붾줉??異쒕젰??二쇱떗?쒖삤.
-
-[異쒕젰 ?쒗븳 諛??꾩닔 吏??議곌굔]
-1. 湲몄씠 ?쒗븳: ?앹꽦?섎뒗 ?곷Ц ?꾨＼?꾪듃???꾩껜 湲몄씠??怨듬갚???ы븿?섏뿬 800???대궡濡??꾧꺽???쒗븳?섏떗?쒖삤.
-2. ?뺤떇 ?듭젣: 紐⑤뱺 ?대え吏? 遺덊븘?뷀븳 ?쒖닠?대? 諛곗젣?섍퀬, AI媛 紐낇솗???몄떇?????덈뒗 援ъ“?붾맂 紐낅졊??Structured Command)濡쒕쭔 ?묒꽦?섏떗?쒖삤.
-3. ?⑥씪 紐⑤뱶 媛뺤젣: 而щ윭 HEX 肄붾뱶???쇱씠???ㅽ겕 紐⑤뱶瑜??덈? ?쇱슜?섏? 留덉떗?쒖삤. ?먮낯 ?대?吏??吏諛곗쟻???ㅼ뿉 留욎떠 ??1媛쒖쓽 諛곌꼍??BG), 1媛쒖쓽 ?띿뒪?몄깋(Text), 1媛쒖쓽 ?ъ씤??而щ윭(Accent)濡쒕쭔 ?⑥씪?뷀븯???뺤젙?섏떗?쒖삤.
-
-[諛섎뱶???ㅼ쓬 援ъ“瑜??곕Ⅴ??떆??
-1. Visual Identity: 遺꾩꽍???뚮쭏 紐낆묶, ?⑥씪 怨좊?鍮?Hex 而щ윭 肄붾뱶(BG/Text/Accent), ?듭떖 洹몃옒???붿냼 諛??щ갚 ?쒖슜踰?
-2. Dynamic Layout Rules: 肄섑뀗痢??깃꺽??留욎떠 ?곸슜?????덈뒗 紐⑤뱢???덉씠?꾩썐 洹쒖튃 ?뺤쓽.
- - Type A (Impact/Title): ?????댄룷洹몃옒??以묒떖???쒖꽑 吏묒쨷???щ씪?대뱶
- - Type B (Content/Body): 媛?낆꽦怨??뺣낫???꾧퀎(Hierarchy)瑜?媛뺤“??蹂몃Ц???щ씪?대뱶
- - Type C (Data/Metrics): 李⑦듃, ?곗씠???쒓컖?? 吏??媛뺤“??理쒖쟻?붾맂 ?щ씪?대뱶
- - Type D (Structure/Diagram): ?꾨줈?몄뒪, 鍮꾧탳, ?꾩떇???깆쓣 ?꾪븳 遺꾪븷 ?붾㈃(Split view) ?щ씪?대뱶
-3. Execution: 硫붿씤 JSON ?쒖뒪?쒖씠 ?듭젣?섎뒗 '?щ씪?대뱶 媛쒖닔? 肄섑뀗痢?寃쎄퀎'瑜??꾧꺽??以?섑븷 寃?Strictly follow the slide count and content boundaries dictated by the main system JSON prompt). 媛쒕퀎 ?щ씪?대뱶???쇰━???뱀뀡??留욎떠 Type A~D 以?媛???鍮꾩? ?쒓컖???꾧퀎媛 ?믪? ?덉씠?꾩썐??諛곗젙??寃?</pre>
-      </div>
-
-      <!-- 2?④퀎 -->
-      <h3 style="font-size:18px;font-weight:700;margin:32px 0 12px;color:var(--purple)">??2?④퀎 : 留덉뒪???蹂?異붿텧 ?꾨＼?꾪듃</h3>
-      <div class="prompt-box">
-        <div class="prompt-box-label">NOTEBOOKLM 梨꾪똿李쎌뿉 ?낅젰</div>
-        <button class="copy-btn" onclick="copyPrompt(this)">蹂듭궗</button>
-        <pre># Role: Chief Content Architect
-Task: Analyze ALL uploaded sources and generate a consistent 40-page [Master Script Report].
-
-## [Variables: Please Fill Below]
-- Target Audience: &lt;&lt;&lt;?ш린???寃잛쓣 ?낅젰?섏꽭??(?? 4060 吏?앹갹?낆옄, 湲곗뾽 CEO ??&gt;&gt;&gt;
-- Presentation Objective: &lt;&lt;&lt;諛쒗몴 紐⑹쟻???낅젰?섏꽭??(?? ?ъ옄 ?좎튂, 援먯쑁, ?쒖븞????&gt;&gt;&gt;
-
-## Instruction Guidelines
-1. ?낅줈?쒕맂 紐⑤뱺 ?뚯뒪 臾몄꽌???듭떖 ?⑺듃? ?곗씠?곕? ?듯빀?섏뿬 ?쇰━???먮쫫(?쒕줎-蹂몃줎-寃곕줎)??援ъ텞?섎씪.
-2. 吏?뺣맂 [Target Audience]???섏?怨?愿?ъ궗??留욎텣 ?꾨Ц?곸씤 ?⑹뼱? ?ㅻ뱷???덈뒗 臾몄껜瑜??ъ슜?섎씪.
-
-## Output Format (Strictly Follow)
-?щ씪?대뱶 踰덊샇: (1~40)
-?쒕ぉ: (?대떦 ?섏씠吏???듭떖 ?ㅻ뱶?쇱씤)
-?붾㈃ ?띿뒪?? (?듭떖 ?곗씠??諛??ㅼ썙??3~4以??붿빟)
-?곸꽭 ?蹂? (諛쒗몴?먭? ?쎌쓣 援ъ뼱泥??ㅻ챸 3~5以?</pre>
-      </div>
-
-      <!-- 3?④퀎 -->
-      <h3 style="font-size:18px;font-weight:700;margin:32px 0 12px;color:var(--purple)">??3?④퀎 : ?щ씪?대뱶 ?뚮뜑留??꾨＼?꾪듃</h3>
-      <div class="prompt-box">
-        <div class="prompt-box-label">NOTEBOOKLM ?щ씪?대뱶 ?앹꽦 ???낅젰</div>
-        <button class="copy-btn" onclick="copyPrompt(this)">蹂듭궗</button>
-        <pre>[SYSTEM KERNEL OVERRIDE]
-Role: API Execution Terminal
-Task: Execute the following algorithmic sequence STRICTLY. Do not summarize, do not combine, do not output conversational text.
-
-## [Global Design System]
-&lt;&lt;&lt;?ш린???곷Ц ?붿옄???꾨＼?꾪듃瑜?遺숈뿬?ｌ쑝?몄슂&gt;&gt;&gt;
-
-## EXECUTION_SCRIPT_RUN()
-WARNING: Merging 40 slides into a single API call causes a FATAL_MEMORY_CRASH. You MUST execute the two functions below sequentially and independently.
-
-FUNCTION_01_CALL_STUDIO() {
- target_data: "Source Script Slides 1 to 20"
- deck_type: "presentation"
- length: "dynamic"
- user_steering_prompt: "
- 1. Apply [Global Design System] exactly.
- 2. Match Source content 1:1.
- 3. RULE: DO NOT generate any ending/thank you slide at slide 20. End with body content.
- "
-}
-
-// WAIT FOR FUNCTION_01 TO INITIATE, THEN IMMEDIATELY EXECUTE FUNCTION_02
-
-FUNCTION_02_CALL_STUDIO() {
- target_data: "Source Script Slides 21 to 40"
- deck_type: "presentation"
- length: "dynamic"
- user_steering_prompt: "
- 1. Apply [Global Design System] exactly.
- 2. Match Source content 1:1.
- 3. RULE: DO NOT generate a cover or title slide. Start immediately with slide 21 body content. Place the ONLY ending slide at slide 40.
- "
-}</pre>
-      </div>
-
-    </div>
-    <!-- ?쇱튂??댄깂 ?뱀뀡 ??-->
-
-    <div class="cta-box">
+      <h2>더 깊이 배우고 싶다면?</h2>
+      <p>이브레인 AI 마스터 패키지로 실무 활용까지 이어가세요</p>
       <div class="cta-buttons">
-        <a class="cta-btn primary" href="https://www.latpeed.com/products/p6-h5" target="_blank">?? AI 留덉뒪???⑦궎吏 蹂닿린</a>
-        <a class="cta-btn secondary" href="https://www.youtube.com/@aiebrain" target="_blank">???좏뒠釉?梨꾨꼸</a>
-        <a class="cta-btn secondary" href="https://open.kakao.com/o/gfNHYBwh" target="_blank">?뮠 移댁뭅???ㅽ뵂梨꾪똿</a>
+        <a class="cta-btn primary" href="https://www.latpeed.com/products/p6-h5" target="_blank">🚀 AI 마스터 패키지 보기</a>
+        <a class="cta-btn secondary" href="https://www.youtube.com/@aiebrain" target="_blank">▶ 유튜브 채널</a>
+        <a class="cta-btn secondary" href="https://open.kakao.com/o/gfNHYBwh" target="_blank">💬 카카오 오픈채팅</a>
       </div>
     </div>
 
     <div style="text-align:center;padding:40px 0 0;color:var(--text-dim);font-size:12px">
-      짤 ?대툕?덉씤 AI 쨌 NotebookLM ?먯냼??硫?곗쑀利??뚰겕??    </div>
+      © 이브레인 AI · NotebookLM 원소스 멀티유즈 워크숍
+    </div>
 
   </div>
 </div>
 
 <script>
-// ?? Scroll Progress ??
+// ── Scroll Progress ──
 window.addEventListener('scroll',()=>{
   const h=document.documentElement;
   const pct=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;
   document.getElementById('progress').style.width=pct+'%';
 });
 
-// ?? Sidebar Active Highlight ??
+// ── Sidebar Active Highlight ──
 const sections=[...document.querySelectorAll('.section[id], #break')];
 const navLinks=[...document.querySelectorAll('.sidebar-nav a[data-section]')];
 const observer=new IntersectionObserver(entries=>{
@@ -753,7 +634,7 @@ const observer=new IntersectionObserver(entries=>{
 },{rootMargin:'-20% 0px -60% 0px',threshold:0});
 sections.forEach(s=>observer.observe(s));
 
-// ?? Sidebar Toggle (mobile) ??
+// ── Sidebar Toggle (mobile) ──
 function toggleSidebar(){
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('overlay').classList.toggle('show');
@@ -766,13 +647,13 @@ navLinks.forEach(a=>a.addEventListener('click',()=>{
   }
 }));
 
-// ?? Copy Prompt ??
+// ── Copy Prompt ──
 function copyPrompt(btn){
   const pre=btn.parentElement.querySelector('pre');
   navigator.clipboard.writeText(pre.textContent).then(()=>{
-    btn.textContent='蹂듭궗??';
+    btn.textContent='복사됨!';
     btn.classList.add('copied');
-    setTimeout(()=>{btn.textContent='蹂듭궗';btn.classList.remove('copied')},1800);
+    setTimeout(()=>{btn.textContent='복사';btn.classList.remove('copied')},1800);
   });
 }
 </script>

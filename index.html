@@ -171,6 +171,7 @@
     <a href="#s8" data-section="s8"><span class="nav-badge">8</span>PPT 슬라이드 자동 생성</a>
     <a href="#s9" data-section="s9"><span class="nav-badge">9</span>인포그래픽 → 카드뉴스</a>
     <a href="#s10" data-section="s10"><span class="nav-badge">10</span>마무리 + CTA</a>
+    <a href="#pitch-titan" data-section="pitch-titan"><span class="nav-badge" style="background:var(--yellow);color:#000">⚡</span>피치타이탄 프롬프트</a>
     <div style="height:1px;background:var(--border);margin:12px 20px"></div>
     <a href="#timetable" data-section="timetable"><span class="nav-badge" style="font-size:10px">⏱</span>타임테이블</a>
     <a href="#tools-all" data-section="tools-all"><span class="nav-badge" style="font-size:10px">🛠</span>도구 모음</a>
@@ -598,6 +599,127 @@
     <div class="cta-section">
       <h2>더 깊이 배우고 싶다면?</h2>
       <p>이브레인 AI 마스터 패키지로 실무 활용까지 이어가세요</p>
+
+    <!-- ================================================ -->
+    <!-- 피치타이탄 노트북LM 슬라이드 프롬프트 섹션 -->
+    <!-- ================================================ -->
+    </div>
+
+    <div class="section" id="pitch-titan">
+      <div class="section-head">
+        <div class="section-num" style="background:var(--yellow);color:#000">⚡</div>
+        <h2 class="section-title">피치타이탄 — 노트북LM 슬라이드 프롬프트</h2>
+      </div>
+
+      <div class="key-msg">
+        <strong>3단계 프로세스:</strong> 디자인 추출 → 마스터 대본 → 슬라이드 렌더링<br>
+        이 프롬프트 세트를 순서대로 실행하면 <strong>40장 PPT가 자동 생성</strong>됩니다.
+      </div>
+
+      <!-- 디자인 참고 사이트 -->
+      <h3 style="font-size:18px;font-weight:700;margin:28px 0 12px;color:var(--mint)">□ 디자인 참고용 사이트</h3>
+      <div class="tool-links">
+        <a class="tool-link" href="https://www.behance.net/" target="_blank"><span class="dot"></span>Behance</a>
+        <a class="tool-link" href="https://dribbble.com/" target="_blank"><span class="dot"></span>Dribbble</a>
+      </div>
+
+      <!-- GoFullPage -->
+      <h3 style="font-size:18px;font-weight:700;margin:28px 0 12px;color:var(--mint)">□ GoFullPage — 크롬 확장 프로그램</h3>
+      <div class="tool-links">
+        <a class="tool-link" href="https://chromewebstore.google.com/detail/gofullpage-full-page-scre/fdpohaocaechififmbbbbbknoalclacl?hl=ko" target="_blank"><span class="dot"></span>GoFullPage 설치하기</a>
+      </div>
+
+      <!-- 1단계 -->
+      <h3 style="font-size:18px;font-weight:700;margin:32px 0 12px;color:var(--purple)">□ 1단계 : 슬라이드 영문 디자인 추출 프롬프트</h3>
+      <div class="prompt-box">
+        <div class="prompt-box-label">GEMINI에 이미지와 함께 입력</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        <pre>업로드한 [이미지]의 디자인 스타일(전체 콘셉트, 컬러 HEX코드, 톤앤매너, 주요 도형 및 그래픽 특징)을 정밀하게 분석하십시오.
+
+분석한 내용을 바탕으로, NotebookLM의 자동화 시스템 파라미터에 바로 붙여넣을 수 있는 [Adaptive Presentation Design System] 형식의 영문 프롬프트(English Prompt)를 작성하여 코드블록에 출력해 주십시오.
+
+[출력 제한 및 필수 지시 조건]
+1. 길이 제한: 생성되는 영문 프롬프트의 전체 길이는 공백을 포함하여 800자 이내로 엄격히 제한하십시오.
+2. 형식 통제: 모든 이모지와 불필요한 서술어를 배제하고, AI가 명확히 인식할 수 있는 구조화된 명령어(Structured Command)로만 작성하십시오.
+3. 단일 모드 강제: 컬러 HEX 코드는 라이트/다크 모드를 절대 혼용하지 마십시오. 원본 이미지의 지배적인 톤에 맞춰 단 1개의 배경색(BG), 1개의 텍스트색(Text), 1개의 포인트 컬러(Accent)로만 단일화하여 확정하십시오.
+
+[반드시 다음 구조를 따르십시오]
+1. Visual Identity: 분석된 테마 명칭, 단일 고대비 Hex 컬러 코드(BG/Text/Accent), 핵심 그래픽 요소 및 여백 활용법.
+2. Dynamic Layout Rules: 콘텐츠 성격에 맞춰 적용할 수 있는 모듈형 레이아웃 규칙 정의.
+ - Type A (Impact/Title): 대형 타이포그래피 중심의 시선 집중형 슬라이드
+ - Type B (Content/Body): 가독성과 정보의 위계(Hierarchy)를 강조한 본문형 슬라이드
+ - Type C (Data/Metrics): 차트, 데이터 시각화, 지표 강조에 최적화된 슬라이드
+ - Type D (Structure/Diagram): 프로세스, 비교, 도식화 등을 위한 분할 화면(Split view) 슬라이드
+3. Execution: 메인 JSON 시스템이 통제하는 '슬라이드 개수와 콘텐츠 경계'를 엄격히 준수할 것(Strictly follow the slide count and content boundaries dictated by the main system JSON prompt). 개별 슬라이드의 논리적 섹션에 맞춰 Type A~D 중 가장 대비와 시각적 위계가 높은 레이아웃을 배정할 것.</pre>
+      </div>
+
+      <!-- 2단계 -->
+      <h3 style="font-size:18px;font-weight:700;margin:32px 0 12px;color:var(--purple)">□ 2단계 : 마스터 대본 추출 프롬프트</h3>
+      <div class="prompt-box">
+        <div class="prompt-box-label">NOTEBOOKLM 채팅창에 입력</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        <pre># Role: Chief Content Architect
+Task: Analyze ALL uploaded sources and generate a consistent 40-page [Master Script Report].
+
+## [Variables: Please Fill Below]
+- Target Audience: &lt;&lt;&lt;여기에 타겟을 입력하세요 (예: 4060 지식창업자, 기업 CEO 등)&gt;&gt;&gt;
+- Presentation Objective: &lt;&lt;&lt;발표 목적을 입력하세요 (예: 투자 유치, 교육, 제안서 등)&gt;&gt;&gt;
+
+## Instruction Guidelines
+1. 업로드된 모든 소스 문서의 핵심 팩트와 데이터를 통합하여 논리적 흐름(서론-본론-결론)을 구축하라.
+2. 지정된 [Target Audience]의 수준과 관심사에 맞춘 전문적인 용어와 설득력 있는 문체를 사용하라.
+
+## Output Format (Strictly Follow)
+슬라이드 번호: (1~40)
+제목: (해당 페이지의 핵심 헤드라인)
+화면 텍스트: (핵심 데이터 및 키워드 3~4줄 요약)
+상세 대본: (발표자가 읽을 구어체 설명 3~5줄)</pre>
+      </div>
+
+      <!-- 3단계 -->
+      <h3 style="font-size:18px;font-weight:700;margin:32px 0 12px;color:var(--purple)">□ 3단계 : 슬라이드 렌더링 프롬프트</h3>
+      <div class="prompt-box">
+        <div class="prompt-box-label">NOTEBOOKLM 슬라이드 생성 시 입력</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        <pre>[SYSTEM KERNEL OVERRIDE]
+Role: API Execution Terminal
+Task: Execute the following algorithmic sequence STRICTLY. Do not summarize, do not combine, do not output conversational text.
+
+## [Global Design System]
+&lt;&lt;&lt;여기에 영문 디자인 프롬프트를 붙여넣으세요&gt;&gt;&gt;
+
+## EXECUTION_SCRIPT_RUN()
+WARNING: Merging 40 slides into a single API call causes a FATAL_MEMORY_CRASH. You MUST execute the two functions below sequentially and independently.
+
+FUNCTION_01_CALL_STUDIO() {
+ target_data: "Source Script Slides 1 to 20"
+ deck_type: "presentation"
+ length: "dynamic"
+ user_steering_prompt: "
+ 1. Apply [Global Design System] exactly.
+ 2. Match Source content 1:1.
+ 3. RULE: DO NOT generate any ending/thank you slide at slide 20. End with body content.
+ "
+}
+
+// WAIT FOR FUNCTION_01 TO INITIATE, THEN IMMEDIATELY EXECUTE FUNCTION_02
+
+FUNCTION_02_CALL_STUDIO() {
+ target_data: "Source Script Slides 21 to 40"
+ deck_type: "presentation"
+ length: "dynamic"
+ user_steering_prompt: "
+ 1. Apply [Global Design System] exactly.
+ 2. Match Source content 1:1.
+ 3. RULE: DO NOT generate a cover or title slide. Start immediately with slide 21 body content. Place the ONLY ending slide at slide 40.
+ "
+}</pre>
+      </div>
+
+    </div>
+    <!-- 피치타이탄 섹션 끝 -->
+
+    <div class="cta-box">
       <div class="cta-buttons">
         <a class="cta-btn primary" href="https://www.latpeed.com/products/p6-h5" target="_blank">🚀 AI 마스터 패키지 보기</a>
         <a class="cta-btn secondary" href="https://www.youtube.com/@aiebrain" target="_blank">▶ 유튜브 채널</a>

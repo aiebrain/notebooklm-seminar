@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NotebookLM 기반 AI 콘텐츠 자동화 마스터클래스 - 핸드아웃</title>
+<style>
+  /* ===== Reset & Base ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #1a1a1a;
+    background: #fff;
+  }
+
+  /* ===== Page container ===== */
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 18mm 20mm 20mm 20mm;
+    page-break-after: always;
+    position: relative;
+  }
+  .page:last-child { page-break-after: avoid; }
+
+  /* ===== Header ===== */
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #6C63FF;
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+    font-size: 8.5pt;
+    color: #888;
+  }
+  .page-header .brand { font-weight: 700; color: #6C63FF; }
+
+  /* ===== Typography ===== */
+  h1 { font-size: 24pt; color: #6C63FF; margin-bottom: 8px; line-height: 1.3; }
+  h2 { font-size: 16pt; color: #6C63FF; margin-bottom: 10px; border-bottom: 1.5px solid #e0e0e0; padding-bottom: 5px; }
+  h3 { font-size: 13pt; color: #333; margin: 14px 0 6px 0; }
+  h4 { font-size: 11.5pt; color: #6C63FF; margin: 10px 0 4px 0; }
+  p { margin-bottom: 6px; }
+
+  /* ===== Accent ===== */
+  .accent { color: #6C63FF; }
+  .accent-bg { background: #6C63FF; color: #fff; padding: 2px 8px; border-radius: 3px; font-weight: 700; }
+  .tag { display: inline-block; background: #f0eeff; color: #6C63FF; padding: 2px 10px; border-radius: 12px; font-size: 9.5pt; font-weight: 600; margin-right: 4px; }
+
+  /* ===== Cover page ===== */
+  .cover { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 260mm; }
+  .cover h1 { font-size: 28pt; margin-bottom: 12px; }
+  .cover .subtitle { font-size: 13pt; color: #555; margin-bottom: 32px; }
+  .cover .meta { font-size: 11pt; color: #666; margin-bottom: 24px; line-height: 2; }
+  .cover .results { display: flex; gap: 28px; margin-top: 20px; }
+  .cover .result-item { text-align: center; }
+  .cover .result-icon { font-size: 32pt; display: block; margin-bottom: 4px; }
+  .cover .result-label { font-size: 10pt; color: #555; }
+  .cover .line { width: 60px; height: 3px; background: #6C63FF; margin: 16px auto; border-radius: 2px; }
+
+  /* ===== Tables ===== */
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 14px 0; font-size: 10.5pt; }
+  th { background: #6C63FF; color: #fff; text-align: left; padding: 7px 10px; font-weight: 600; }
+  td { padding: 6px 10px; border-bottom: 1px solid #e0e0e0; }
+  tr:nth-child(even) td { background: #fafafe; }
+
+  /* ===== Checklist ===== */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { padding: 4px 0 4px 0; font-size: 11pt; }
+  .checklist li::before { content: "\2610"; margin-right: 8px; font-size: 13pt; color: #6C63FF; }
+
+  /* ===== Steps ===== */
+  .step-badge {
+    display: inline-block;
+    background: #6C63FF;
+    color: #fff;
+    font-weight: 700;
+    font-size: 10pt;
+    padding: 3px 12px;
+    border-radius: 14px;
+    margin-right: 8px;
+  }
+  .step-box {
+    background: #f8f7ff;
+    border-left: 4px solid #6C63FF;
+    padding: 10px 14px;
+    margin: 8px 0 12px 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  /* ===== Ordered steps ===== */
+  .click-steps { padding-left: 22px; margin: 6px 0 10px 0; }
+  .click-steps li { margin-bottom: 3px; }
+
+  /* ===== Link list ===== */
+  .link-list { list-style: none; padding: 0; }
+  .link-list li { padding: 3px 0; font-size: 10.5pt; }
+  .link-list a { color: #6C63FF; text-decoration: underline; }
+
+  /* ===== Diagram ===== */
+  .diagram {
+    background: #f8f7ff;
+    border: 1.5px solid #d8d5ff;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 10.5pt;
+    line-height: 1.8;
+    margin: 10px 0;
+    white-space: pre;
+  }
+
+  /* ===== Memo area ===== */
+  .memo-area {
+    border: 1.5px dashed #ccc;
+    border-radius: 8px;
+    min-height: 120px;
+    padding: 12px;
+    margin-top: 14px;
+  }
+  .memo-area .label { font-size: 9pt; color: #aaa; margin-bottom: 6px; }
+  .memo-lines { width: 100%; }
+  .memo-lines .line {
+    border-bottom: 1px dotted #ddd;
+    height: 28px;
+  }
+
+  /* ===== Two column ===== */
+  .two-col { display: flex; gap: 20px; }
+  .two-col > div { flex: 1; }
+
+  /* ===== URL box ===== */
+  .url-box {
+    background: #f4f4f4;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-family: 'Consolas', monospace;
+    font-size: 9.5pt;
+    color: #333;
+    word-break: break-all;
+    display: inline-block;
+    margin: 2px 0;
+  }
+
+  /* ===== Prompt box ===== */
+  .prompt-box {
+    background: #1a1a2e;
+    color: #e0e0e0;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-family: 'Consolas', monospace;
+    font-size: 9.5pt;
+    margin: 8px 0 12px 0;
+  }
+  .prompt-box .prompt-label { color: #6C63FF; font-weight: 700; margin-bottom: 4px; }
+
+  /* ===== QR placeholder ===== */
+  .qr-box {
+    border: 2px solid #6C63FF;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 8pt;
+    color: #6C63FF;
+    border-radius: 8px;
+    margin: 8px 0;
+  }
+
+  /* ===== Print styles ===== */
+  @media print {
+    @page {
+      size: A4;
+      margin: 12mm 14mm 14mm 14mm;
+    }
+    body { background: none; }
+    .page {
+      width: auto;
+      min-height: auto;
+      margin: 0;
+      padding: 6mm 6mm 10mm 6mm;
+      page-break-after: always;
+    }
+    .page:last-child { page-break-after: avoid; }
+    .no-print { display: none; }
+    a { color: #6C63FF !important; }
+  }
+
+  /* ===== Screen helper ===== */
+  @media screen {
+    body { background: #e8e8e8; }
+    .page {
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== PAGE 1: COVER ==================== -->
+<div class="page">
+  <div class="cover">
+    <div class="line"></div>
+    <h1>NotebookLM 기반<br>AI 콘텐츠 자동화<br>마스터클래스</h1>
+    <p class="subtitle">자료 1개로 4종 콘텐츠를 만드는 원소스 멀티유즈 워크플로우</p>
+    <div class="line"></div>
+    <div class="meta">
+      <strong>강사:</strong> 이브레인 만성 <span class="accent">@aiebrain</span><br>
+      <strong>일시:</strong> 2026년 3월 29일<br>
+      <strong>대상:</strong> AI 초보자 (4050 실습 중심)<br>
+      <strong>소요:</strong> 3시간 (실습 포함)
+    </div>
+    <div class="results">
+      <div class="result-item">
+        <span class="result-icon">&#127908;</span>
+        <span class="result-label">AI 팟캐스트</span>
+      </div>
+      <div class="result-item">
+        <span class="result-icon">&#127916;</span>
+        <span class="result-label">숏폼 영상</span>
+      </div>
+      <div class="result-item">
+        <span class="result-icon">&#128202;</span>
+        <span class="result-label">PPT 슬라이드</span>
+      </div>
+      <div class="result-item">
+        <span class="result-icon">&#128241;</span>
+        <span class="result-label">카드뉴스</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGE 2: SCHEDULE + PREP ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="brand">이브레인 @aiebrain</span>
+    <span>Page 2 / 7</span>
+  </div>
+
+  <h2>&#128197; 오늘의 일정</h2>
+  <table>
+    <thead>
+      <tr><th>구분</th><th>시간</th><th>내용</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>전반부</strong></td><td>80분</td><td>Grok 리서치 &rarr; NotebookLM 소스 입력 &rarr; AI 팟캐스트 &rarr; 숏폼 영상</td></tr>
+      <tr><td><strong>휴식</strong></td><td>15분</td><td>중간 쉬는 시간</td></tr>
+      <tr><td><strong>후반부</strong></td><td>65분</td><td>PPT 자동 생성 &rarr; 카드뉴스 제작 &rarr; 마무리</td></tr>
+    </tbody>
+  </table>
+
+  <h2>&#9989; 준비물 체크리스트</h2>
+  <ul class="checklist">
+    <li>Google 계정 로그인 완료</li>
+    <li>Chrome 브라우저 (최신 버전)</li>
+    <li>GoFullPage 크롬 확장프로그램 설치</li>
+    <li>NotebookLM 접속 확인 (notebooklm.google)</li>
+    <li>Grok 접속 및 로그인 (grok.com)</li>
+    <li>CapCut 접속 확인 (capcut.com)</li>
+    <li>Canva 접속 및 로그인 (canva.com)</li>
+    <li>프롬프트 링크 2종 미리 열어두기</li>
+  </ul>
+
+  <h2 style="margin-top:16px;">&#128279; 접속할 사이트 목록</h2>
+  <table>
+    <thead>
+      <tr><th>도구</th><th>URL</th><th>용도</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>NotebookLM</td><td class="url-box">notebooklm.google</td><td>소스 분석 + 팟캐스트</td></tr>
+      <tr><td>Grok</td><td class="url-box">grok.com</td><td>Deep Research 리서치</td></tr>
+      <tr><td>Brue</td><td class="url-box">brue.ai</td><td>오디오 &rarr; 영상 변환</td></tr>
+      <tr><td>CapCut</td><td class="url-box">capcut.com</td><td>자동 자막 + 편집</td></tr>
+      <tr><td>Canva</td><td class="url-box">canva.com</td><td>카드뉴스 디자인</td></tr>
+      <tr><td>Gemini</td><td class="url-box">gemini.google.com</td><td>컬러 HEX 추출</td></tr>
+      <tr><td>Google Slides</td><td class="url-box">slides.google.com</td><td>PPT 제작</td></tr>
+      <tr><td>Behance</td><td class="url-box">behance.net</td><td>디자인 레퍼런스</td></tr>
+      <tr><td>Dribbble</td><td class="url-box">dribbble.com</td><td>디자인 레퍼런스</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ==================== PAGE 3: STEP 1~3 ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="brand">이브레인 @aiebrain</span>
+    <span>Page 3 / 7</span>
+  </div>
+
+  <h2>&#128269; STEP 1 &mdash; Grok Deep Research로 자료 조사</h2>
+  <p>일론 머스크의 xAI가 만든 AI. Deep Research 모드로 주제를 깊이 조사해 보고서를 자동 생성합니다.</p>
+  <div class="step-box">
+    <h4>핵심 클릭 순서</h4>
+    <ol class="click-steps">
+      <li><strong>grok.com</strong> 접속</li>
+      <li>좌측 메뉴에서 <span class="accent-bg">Deep Research</span> 선택</li>
+      <li>검색창에 구체적 주제 입력 (예: "2025년 AI 마케팅 트렌드")</li>
+      <li>AI가 2~3분간 웹 검색 &rarr; 보고서 자동 생성</li>
+      <li>텍스트 전체 선택 (Ctrl+A) &rarr; 복사 (Ctrl+C)</li>
+      <li>메모장에 붙여넣기 &rarr; <strong>.txt 파일로 바탕화면에 저장</strong></li>
+    </ol>
+  </div>
+
+  <h2>&#128196; STEP 2 &mdash; NotebookLM 소스 입력</h2>
+  <p>Google이 만든 AI 리서치 어시스턴트. 내가 올린 자료만 분석하므로 거짓 정보(할루시네이션)가 거의 없습니다.</p>
+  <div class="step-box">
+    <h4>핵심 클릭 순서</h4>
+    <ol class="click-steps">
+      <li><strong>notebooklm.google</strong> 접속</li>
+      <li><span class="accent-bg">새 노트북</span> 클릭</li>
+      <li>좌측 <strong>"+" 소스 추가</strong> &rarr; "파일 업로드" &rarr; Grok .txt 파일 선택</li>
+      <li>"+" 소스 추가 &rarr; <strong>"유튜브"</strong> 선택 &rarr; 관련 영상 URL 2~3개 붙여넣기</li>
+      <li>채팅창에 테스트: <em>"이 자료들의 핵심을 3줄로 요약해 줘"</em></li>
+    </ol>
+  </div>
+
+  <h2>&#127908; STEP 3 &mdash; AI 팟캐스트 (오디오 오버뷰) 생성</h2>
+  <p>내 자료를 바탕으로 2명의 AI 호스트가 대화하는 팟캐스트를 자동 생성합니다. 클릭 한 번이면 끝!</p>
+  <div class="step-box">
+    <h4>핵심 클릭 순서</h4>
+    <ol class="click-steps">
+      <li>NotebookLM 우측 패널 <span class="accent-bg">오디오 오버뷰</span> 열기</li>
+      <li>(선택) "커스터마이즈"에서 초점 주제 지정</li>
+      <li><strong>"생성"</strong> 버튼 클릭 &rarr; 3~5분 대기</li>
+      <li>재생 버튼으로 내용 확인</li>
+      <li><strong>다운로드(&#8595;)</strong> 아이콘 &rarr; MP3 파일로 바탕화면에 저장</li>
+    </ol>
+  </div>
+  <p style="text-align:center; margin-top:10px;">
+    <span class="tag">&#9989; 결과물 1</span> <strong>AI 팟캐스트 (MP3)</strong> 완성!
+  </p>
+</div>
+
+<!-- ==================== PAGE 4: STEP 4 ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="brand">이브레인 @aiebrain</span>
+    <span>Page 4 / 7</span>
+  </div>
+
+  <h2>&#127916; STEP 4 &mdash; 팟캐스트를 숏폼 영상으로 변환</h2>
+  <p>MP3 팟캐스트에 배경 영상을 입히고, 자동 자막까지 추가하여 유튜브/릴스/틱톡용 영상을 완성합니다.</p>
+
+  <h3><span class="step-badge">4-A</span> Brue &mdash; 오디오를 영상으로</h3>
+  <div class="step-box">
+    <h4>핵심 클릭 순서</h4>
+    <ol class="click-steps">
+      <li><strong>Brue</strong> 접속 및 로그인</li>
+      <li><span class="accent-bg">Upload Audio</span> &rarr; 다운로드한 팟캐스트 MP3 선택</li>
+      <li>AI가 음성을 분석해 어울리는 배경 영상 자동 매칭</li>
+      <li>결과 영상 확인 &rarr; <strong>다운로드</strong></li>
+    </ol>
+  </div>
+
+  <h3><span class="step-badge">4-B</span> CapCut &mdash; 자동 자막 입히기</h3>
+  <div class="step-box">
+    <h4>핵심 클릭 순서</h4>
+    <ol class="click-steps">
+      <li><strong>capcut.com</strong> 접속 &rarr; 새 프로젝트</li>
+      <li>Brue에서 만든 영상 파일 업로드</li>
+      <li><strong>"텍스트"</strong> 메뉴 &rarr; <span class="accent-bg">자동 캡션</span> 클릭</li>
+      <li>언어: <strong>한국어</strong> 선택 &rarr; "생성" (1~2분 대기)</li>
+      <li>자막 클릭 &rarr; 스타일 탭에서 <strong>폰트/크기/색상</strong> 수정</li>
+    </ol>
+  </div>
+
+  <h3><span class="step-badge">4-C</span> 영상 내보내기</h3>
+  <div class="step-box">
+    <h4>내보내기 설정</h4>
+    <ol class="click-steps">
+      <li>화면 비율: <strong>9:16 (세로형)</strong> &mdash; 숏츠/릴스 필수</li>
+      <li>우측 상단 <span class="accent-bg">내보내기</span> 클릭</li>
+      <li>해상도: <strong>1080p</strong></li>
+      <li>다운로드 &rarr; MP4 파일로 저장</li>
+    </ol>
+  </div>
+
+  <p style="text-align:center; margin-top:12px;">
+    <span class="tag">&#9989; 결과물 2</span> <strong>자막 숏폼 영상 (MP4)</strong> 완성!
+  </p>
+
+  <div style="background:#fff8e1; border-left:4px solid #ffb300; padding:10px 14px; border-radius:0 6px 6px 0; margin-top:16px;">
+    <strong>&#128161; TIP &mdash; 자막은 조회수의 핵심!</strong><br>
+    글씨 크기를 크게, 글자 뒤 배경색으로 가독성을 높이세요.
+  </div>
+</div>
+
+<!-- ==================== PAGE 5: STEP 5~6 ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="brand">이브레인 @aiebrain</span>
+    <span>Page 5 / 7</span>
+  </div>
+
+  <h2>&#128202; STEP 5 &mdash; PPT 슬라이드 자동 생성</h2>
+
+  <h3><span class="step-badge">5-A</span> 디자인 레퍼런스 수집</h3>
+  <div class="step-box">
+    <ol class="click-steps">
+      <li><strong>behance.net</strong> 또는 <strong>dribbble.com</strong> 접속</li>
+      <li>검색: <em>"presentation design"</em> 또는 <em>"infographic"</em></li>
+      <li>마음에 드는 디자인 페이지 열기</li>
+      <li>크롬 확장 <span class="accent-bg">GoFullPage</span> 아이콘 클릭 &rarr; 전체 페이지 캡처 &rarr; PNG 다운로드</li>
+    </ol>
+  </div>
+
+  <h3><span class="step-badge">5-B</span> Gemini로 컬러 HEX 추출</h3>
+  <div class="step-box">
+    <ol class="click-steps">
+      <li><strong>gemini.google.com</strong> 접속</li>
+      <li>캡처한 디자인 이미지 업로드 (&#128206; 클릭)</li>
+      <li><strong>프롬프트 A</strong> 붙여넣기 &rarr; 전송</li>
+      <li>AI가 HEX 컬러 코드 + 디자인 분석 결과 출력</li>
+    </ol>
+  </div>
+
+  <h3><span class="step-badge">5-C</span> NotebookLM PPT 구조화 + Google Slides</h3>
+  <div class="step-box">
+    <ol class="click-steps">
+      <li>NotebookLM 채팅창에 <strong>프롬프트 B (마스터 대본)</strong> 붙여넣기</li>
+      <li>Target Audience와 Objective 변수 채우기 &rarr; 전송</li>
+      <li>AI가 슬라이드별 제목 + 본문 대본 자동 생성</li>
+      <li><strong>slides.google.com</strong> &rarr; "빈 프레젠테이션" 열기</li>
+      <li>NotebookLM 결과를 슬라이드에 복사/붙여넣기</li>
+      <li>배경색/글자색에 <strong>HEX 코드</strong> 입력하여 테마 통일</li>
+    </ol>
+  </div>
+  <p style="text-align:center; margin-top:8px;">
+    <span class="tag">&#9989; 결과물 3</span> <strong>전문가급 PPT 슬라이드</strong> 완성!
+  </p>
+
+  <h2 style="margin-top:18px;">&#128241; STEP 6 &mdash; 카드뉴스 제작 (Canva)</h2>
+  <div class="step-box">
+    <ol class="click-steps">
+      <li><strong>canva.com</strong> 접속 및 로그인</li>
+      <li>검색: <em>"카드뉴스"</em> 또는 <em>"인스타그램 게시물"</em></li>
+      <li>텍스트가 큼직한 템플릿 선택</li>
+      <li>기본 텍스트 삭제 &rarr; NotebookLM 핵심 내용 붙여넣기</li>
+      <li>PPT와 동일한 <strong>HEX 컬러</strong> 적용 (브랜드 통일)</li>
+      <li>5~7장 분량 확인 &rarr; 커버 제목 임팩트 체크</li>
+      <li>우측 상단 "공유" &rarr; "다운로드" &rarr; <strong>PNG</strong> &rarr; 다운로드</li>
+    </ol>
+  </div>
+  <p style="text-align:center; margin-top:8px;">
+    <span class="tag">&#9989; 결과물 4</span> <strong>SNS 카드뉴스 (PNG)</strong> 완성!
+  </p>
+</div>
+
+<!-- ==================== PAGE 6: PROMPTS + LINKS ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="brand">이브레인 @aiebrain</span>
+    <span>Page 6 / 7</span>
+  </div>
+
+  <h2>&#128221; 프롬프트 모음</h2>
+
+  <div class="two-col">
+    <div>
+      <div class="prompt-box">
+        <div class="prompt-label">&#128206; 프롬프트 A &mdash; 디자인 추출</div>
+        <p>Gemini에서 사용. 디자인 이미지를 업로드하면 컬러, 타이포그래피, 레이아웃을 분석하여 영문 디자인 코드블록 생성.</p>
+        <p style="margin-top:6px; color:#6C63FF; font-weight:700;">https://share.note.sx/tqcwd8uf</p>
+      </div>
+      <p style="font-size:9.5pt; color:#666;">분석 7가지: 컬러 시스템, 타이포그래피, 그리드, 시각적 리듬, 장식 요소, 도형 규칙, 톤&무드</p>
+    </div>
+    <div>
+      <div class="prompt-box">
+        <div class="prompt-label">&#128206; 프롬프트 B &mdash; 마스터 대본</div>
+        <p>NotebookLM에서 사용. 소스를 분석하여 40페이지 분량의 Master Script Report 생성.</p>
+        <p style="margin-top:6px; color:#6C63FF; font-weight:700;">https://share.note.sx/qgnbx59w</p>
+      </div>
+      <p style="font-size:9.5pt; color:#666;">출력: 슬라이드 번호(1~40), 제목, 화면 텍스트(3~4줄), 상세 대본(3~5줄)</p>
+    </div>
+  </div>
+
+  <h2 style="margin-top:18px;">&#128279; 도구 URL 전체 목록</h2>
+  <table>
+    <thead>
+      <tr><th>도구</th><th>URL</th><th>역할</th><th>비용</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>NotebookLM</strong></td><td class="url-box">notebooklm.google</td><td>AI 리서치 + 팟캐스트 + 구조화</td><td>무료</td></tr>
+      <tr><td><strong>Grok</strong></td><td class="url-box">grok.com</td><td>Deep Research 심층 조사</td><td>무료</td></tr>
+      <tr><td><strong>Brue</strong></td><td class="url-box">brue.ai</td><td>오디오 &rarr; 영상 변환</td><td>무료</td></tr>
+      <tr><td><strong>CapCut</strong></td><td class="url-box">capcut.com</td><td>자동 자막 + 영상 편집</td><td>무료</td></tr>
+      <tr><td><strong>Google Slides</strong></td><td class="url-box">slides.google.com</td><td>PPT 슬라이드 제작</td><td>무료</td></tr>
+      <tr><td><strong>Canva</strong></td><td class="url-box">canva.com</td><td>카드뉴스 디자인</td><td>무료</td></tr>
+      <tr><td><strong>Gemini</strong></td><td class="url-box">gemini.google.com</td><td>HEX 컬러 추출</td><td>무료</td></tr>
+      <tr><td><strong>GoFullPage</strong></td><td class="url-box">크롬 웹스토어 검색</td><td>전체 페이지 캡처</td><td>무료</td></tr>
+      <tr><td><strong>Behance</strong></td><td class="url-box">behance.net</td><td>디자인 레퍼런스</td><td>무료</td></tr>
+      <tr><td><strong>Dribbble</strong></td><td class="url-box">dribbble.com</td><td>디자인 레퍼런스</td><td>무료</td></tr>
+    </tbody>
+  </table>
+
+  <h2 style="margin-top:18px;">&#127891; 이브레인 AI 마스터 패키지</h2>
+  <div class="two-col" style="align-items:center;">
+    <div>
+      <p><strong>더 깊이 배우고 싶다면?</strong></p>
+      <p>오늘 배운 워크플로우 + 고급 프롬프트를 포함한<br>올인원 AI 콘텐츠 자동화 패키지</p>
+      <p style="margin-top:8px;"><span class="url-box" style="font-size:11pt; font-weight:700;">latpeed.com/products/p6-h5</span></p>
+      <p style="margin-top:8px;"><strong>유튜브:</strong> <span class="accent">@aiebrain</span> (매주 AI 활용 꿀팁)</p>
+    </div>
+    <div style="text-align:center;">
+      <div class="qr-box" style="margin:0 auto;">
+        QR<br>latpeed.com<br>/products/<br>p6-h5
+      </div>
+      <p style="font-size:8.5pt; color:#888; margin-top:4px;">QR 스캔으로 바로 이동</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGE 7: WORKFLOW DIAGRAM + MEMO ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="brand">이브레인 @aiebrain</span>
+    <span>Page 7 / 7</span>
+  </div>
+
+  <h2>&#128736; 원소스 멀티유즈 워크플로우 전체 흐름</h2>
+
+  <div class="diagram">&#9312; Grok Deep Research
+    &#9474;  주제 입력 &rarr; AI 자동 보고서 (.txt)
+    &#9660;
+&#9313; NotebookLM 소스 입력
+    &#9474;  Grok 보고서 + 유튜브 링크 2~3개 업로드
+    &#9660;
+&#9314; 오디오 오버뷰 생성  &rarr;  &#127908; <strong>결과물 1: AI 팟캐스트 (MP3)</strong>
+    &#9474;  MP3 다운로드
+    &#9660;
+&#9315; Brue + CapCut  &rarr;  &#127916; <strong>결과물 2: 자막 영상 (MP4)</strong>
+    &#9474;  Brue: 배경 영상 매칭
+    &#9474;  CapCut: 자동 자막 + 1080p 내보내기
+    &#9660;
+&#9316; 디자인 레퍼런스 수집
+    &#9474;  Behance/Dribbble &rarr; GoFullPage 캡처
+    &#9474;  Gemini + 프롬프트 A &rarr; HEX 컬러 추출
+    &#9660;
+&#9317; NotebookLM + Google Slides  &rarr;  &#128202; <strong>결과물 3: PPT 슬라이드</strong>
+    &#9474;  프롬프트 B로 40장 대본 &rarr; Slides에 반영 + 컬러 적용
+    &#9660;
+&#9318; Canva  &rarr;  &#128241; <strong>결과물 4: 카드뉴스 (PNG)</strong>
+    &#9474;  템플릿 선택 &rarr; 핵심 내용 교체 &rarr; HEX 컬러 통일
+    &#9660;
+&#9989; <strong>자료 1개 &rarr; 4종 콘텐츠 완성!</strong></div>
+
+  <h2 style="margin-top:18px;">&#9997; 메모</h2>
+  <div class="memo-area">
+    <div class="memo-lines">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:20px; color:#888; font-size:9pt; border-top:1px solid #e0e0e0; padding-top:10px;">
+    <strong style="color:#6C63FF;">이브레인 만성 @aiebrain</strong> | 유튜브: youtube.com/@aiebrain<br>
+    AI가 만들고, 나는 발행만 한다.
+  </div>
+</div>
+
+</body>
+</html>

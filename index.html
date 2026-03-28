@@ -1,348 +1,207 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NotebookLM 풀코스 마스터 — 이브레인</title>
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#FFFFFF;--text:#1A1A2E;--accent:#6C63FF;
-  --accent2:#FF6584;--accent3:#43E97B;--dim:#666;
-  --card-bg:#F5F5FA;
-}
-html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',sans-serif;
-}
-.deck{position:relative;width:100vw;height:100vh}
-.slide{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  justify-content:center;align-items:center;padding:6vh 8vw;
-  opacity:0;pointer-events:none;transition:opacity .5s ease;
-  text-align:center;
-}
-.slide.active{opacity:1;pointer-events:auto}
-
-/* typography */
-h1{font-size:clamp(2rem,5vw,4rem);font-weight:800;line-height:1.2;margin-bottom:.4em}
-h2{font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;line-height:1.3;margin-bottom:.5em}
-h3{font-size:clamp(1.1rem,2vw,1.6rem);font-weight:600;margin-bottom:.4em}
-p,.sub{font-size:clamp(.95rem,1.6vw,1.3rem);line-height:1.7;color:var(--dim);max-width:70ch}
-.accent{color:var(--accent)}
-.accent2{color:var(--accent2)}
-.accent3{color:var(--accent3)}
-.big-emoji{font-size:clamp(3rem,8vw,6rem);margin-bottom:.3em}
-.emoji-row{font-size:clamp(2rem,5vw,3.5rem);margin-bottom:.5em;letter-spacing:.3em}
-.tag{display:inline-block;background:var(--accent);color:#fff;padding:.25em .8em;border-radius:2em;font-size:.85rem;margin:.2em}
-.tag.pink{background:var(--accent2)}
-.tag.green{background:var(--accent3);color:#1A1A2E}
-
-/* step badge */
-.step-badge{
-  display:inline-block;background:var(--accent);color:#fff;
-  font-size:clamp(.8rem,1.2vw,1rem);font-weight:700;
-  padding:.3em 1em;border-radius:2em;margin-bottom:.6em;letter-spacing:.05em;
-}
-
-/* grid helpers */
-.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5em;width:100%;max-width:900px;margin-top:1em}
-.grid4 .card{background:var(--card-bg);border:1px solid rgba(108,99,255,.15);border-radius:1em;padding:1.2em;text-align:center}
-.card .card-emoji{font-size:2.2rem;margin-bottom:.3em}
-.card h3{font-size:1rem;margin-bottom:.2em}
-.card p{font-size:.85rem;color:var(--dim)}
-
-/* timeline */
-.timeline{text-align:left;max-width:600px;width:100%}
-.timeline .row{display:flex;align-items:center;gap:.8em;padding:.45em 0;border-bottom:1px solid rgba(26,26,46,.08)}
-.timeline .row .time{min-width:60px;color:var(--accent);font-weight:700;font-size:.95rem}
-.timeline .row .label{font-size:1rem}
-
-/* diagram */
-.diagram{text-align:left;background:var(--card-bg);border:1px solid rgba(108,99,255,.15);border-radius:1em;padding:1.5em 2em;max-width:560px;font-size:clamp(.9rem,1.4vw,1.15rem);line-height:2}
-.diagram .root{color:var(--accent);font-weight:700}
-.diagram .branch{padding-left:1.5em;color:var(--dim)}
-
-/* result celebration */
-.celebrate h2{margin-bottom:.2em}
-.celebrate .big-emoji{margin-bottom:.2em}
-
-/* page number */
-#pagenum{
-  position:fixed;bottom:2vh;right:3vw;
-  font-size:.85rem;color:var(--dim);z-index:99;
-  font-variant-numeric:tabular-nums;
-}
-
-/* progress bar */
-#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:99;transition:width .4s ease}
-
-/* link style */
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline}
-
-/* responsive small screens */
-@media(max-width:600px){
-  .slide{padding:4vh 5vw}
-  .grid4{grid-template-columns:1fr 1fr;gap:1em}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotebookLM AI 콘텐츠 자동화 마스터클래스 | 이브레인</title>
+    <meta name="description" content="NotebookLM으로 자료 1개에서 팟캐스트+영상+PPT+카드뉴스 4종 콘텐츠를 자동 생산하는 원소스 멀티유즈 마스터클래스">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --card: #161616;
+            --border: #2a2a2a;
+            --text: #e0e0e0;
+            --muted: #888;
+            --accent: #4ade80;
+            --accent2: #38bdf8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+        header { text-align: center; margin-bottom: 3rem; }
+        header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        header h1 span { color: var(--accent); }
+        header p { color: var(--muted); font-size: 0.95rem; }
+        .badge { display: inline-block; background: var(--accent); color: #000; font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-bottom: 1rem; }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: border-color 0.2s;
+        }
+        .card:hover { border-color: var(--accent); }
+        .card h2 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+        .card h2 a { color: var(--text); text-decoration: none; }
+        .card h2 a:hover { color: var(--accent); }
+        .card .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.75rem; }
+        .card .desc { font-size: 0.95rem; margin-bottom: 1rem; }
+        .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .tag { background: #1a2e1a; color: var(--accent); font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; }
+        .tag.blue { background: #1a2535; color: var(--accent2); }
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.85; }
+        .cta-box {
+            background: linear-gradient(135deg, #1a2e1a 0%, #162535 100%);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .cta-box h2 { font-size: 1.3rem; margin-bottom: 0.5rem; color: #fff; }
+        .cta-box p { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.25rem; }
+        .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn-yt { background: #ff0000; color: #fff; }
+        .btn-yt:hover { opacity: 0.9; }
+        .btn-site { background: var(--accent2); color: #000; }
+        .btn-site:hover { opacity: 0.85; }
+        footer { text-align: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 600px) {
+            .container { padding: 1.25rem 1rem; }
+            header h1 { font-size: 1.5rem; }
+        }
+    </style>
 </head>
 <body>
-<div id="progress"></div>
-<div id="pagenum"></div>
+    <div class="container">
+        <header>
+            <span class="badge">AI 커머스 브레인</span>
+            <h1><span>NotebookLM</span> AI 콘텐츠 자동화 마스터클래스</h1>
+            <p>원소스 멀티유즈 — 자료 1개로 4종 콘텐츠 완성 | 2026년 3월</p>
+        </header>
 
-<div class="deck" id="deck">
+        <!-- 카드 1: 세미나 개요 -->
+        <div class="card">
+            <h2>📋 세미나 개요</h2>
+            <div class="meta">3시간 마스터클래스 | 대상: 4050 AI 초보자 | 강사: 이브레인 만성</div>
+            <div class="desc">단 하나의 자료에서 팟캐스트+영상+PPT+카드뉴스 4종 콘텐츠를 자동 생산하는 원소스 멀티유즈 워크플로우 체험</div>
+            <div class="tags">
+                <span class="tag">NotebookLM</span>
+                <span class="tag">Grok</span>
+                <span class="tag blue">CapCut</span>
+                <span class="tag blue">Canva</span>
+                <span class="tag">Gemini</span>
+                <span class="tag">무료</span>
+            </div>
+        </div>
 
-<!-- 1. 타이틀 -->
-<div class="slide active">
-  <div class="big-emoji">🚀</div>
-  <h1><span class="accent">NotebookLM</span> 풀코스 마스터</h1>
-  <p style="color:var(--text);font-size:clamp(1rem,1.8vw,1.4rem)">자료 1개로 팟캐스트 · 카드뉴스 · 영상 · PPT 한번에</p>
-  <p style="margin-top:1.2em">강사 <strong>이브레인 만성</strong> <span class="accent">@aiebrain</span></p>
-</div>
+        <!-- 카드 2: 수강생 핸드아웃 -->
+        <div class="card">
+            <h2>📄 수강생 핸드아웃 (인쇄용)</h2>
+            <div class="meta">A4 7페이지 | 인쇄 최적화 | Ctrl+P</div>
+            <div class="desc">타임테이블, 체크리스트, STEP별 요약, 프롬프트 링크, 메모란 포함</div>
+            <br>
+            <a href="handout.html" class="btn">핸드아웃 열기 →</a>
+        </div>
 
-<!-- 2. 오늘의 결과물 4종 -->
-<div class="slide">
-  <h2>오늘 만들 <span class="accent">결과물 4종</span></h2>
-  <div class="grid4">
-    <div class="card"><div class="card-emoji">🎙️</div><h3>팟캐스트</h3><p>AI 오디오 콘텐츠</p></div>
-    <div class="card"><div class="card-emoji">📱</div><h3>카드뉴스</h3><p>SNS용 인포그래픽</p></div>
-    <div class="card"><div class="card-emoji">🎬</div><h3>영상</h3><p>자막 포함 MP4</p></div>
-    <div class="card"><div class="card-emoji">📊</div><h3>PPT</h3><p>40장 슬라이드</p></div>
-  </div>
-</div>
+        <!-- 카드 3: STEP 1~3 -->
+        <div class="card">
+            <h2>🎙 STEP 1~3 — 리서치 → 팟캐스트</h2>
+            <div class="meta">Grok + NotebookLM | 전반부 약 80분</div>
+            <div class="desc">Grok Deep Research로 자료 조사 → NotebookLM에 텍스트+유튜브 소스 업로드 → 오디오 오버뷰로 AI 팟캐스트 자동 생성</div>
+            <div class="tags">
+                <span class="tag">Grok</span>
+                <span class="tag">NotebookLM</span>
+                <span class="tag blue">팟캐스트</span>
+                <span class="tag blue">Deep Research</span>
+            </div>
+        </div>
 
-<!-- 3. 타임테이블 -->
-<div class="slide">
-  <h2>⏱️ 타임테이블</h2>
-  <div class="timeline">
-    <div class="row"><span class="time">15분</span><span class="label">NotebookLM 소개</span></div>
-    <div class="row"><span class="time">20분</span><span class="label">자료조사 — Deep Research (Grok)</span></div>
-    <div class="row"><span class="time">10분</span><span class="label">유튜브 링크 입력</span></div>
-    <div class="row"><span class="time">20분</span><span class="label">팟캐스트 생성</span></div>
-    <div class="row"><span class="time">25분</span><span class="label">카드뉴스 (Canva)</span></div>
-    <div class="row"><span class="time">25분</span><span class="label">영상 제작 (CapCut)</span></div>
-    <div class="row"><span class="time">10분</span><span class="label">☕ 쉬는 시간</span></div>
-    <div class="row"><span class="time">30분</span><span class="label">PPT 슬라이드 자동 생성</span></div>
-    <div class="row"><span class="time">10분</span><span class="label">마무리 + CTA</span></div>
-    <div class="row" style="border:none"><span class="time accent" style="font-size:1.05rem">3시간</span><span class="label" style="font-weight:700">총 165분 + 15분 버퍼</span></div>
-  </div>
-</div>
+        <!-- 카드 4: STEP 4 영상 제작 -->
+        <div class="card">
+            <h2>🎬 STEP 4 — 영상 제작</h2>
+            <div class="meta">Brue + CapCut | 약 25분</div>
+            <div class="desc">팟캐스트 MP3를 Brue로 배경 영상 매칭 → CapCut 자동 자막 생성 (30초!) → 1080p 내보내기</div>
+            <div class="tags">
+                <span class="tag blue">Brue</span>
+                <span class="tag blue">CapCut</span>
+                <span class="tag">자동자막</span>
+                <span class="tag">영상편집</span>
+            </div>
+        </div>
 
-<!-- 4. NotebookLM 소개 -->
-<div class="slide">
-  <div class="big-emoji">📓</div>
-  <h2>NotebookLM이란?</h2>
-  <p><strong>구글</strong>이 만든 <span class="accent">무료</span> AI 리서치 도구</p>
-  <p style="margin-top:.8em">구글 계정만 있으면 <strong>바로 시작</strong></p>
-</div>
+        <!-- 카드 5: STEP 5~6 PPT + 카드뉴스 -->
+        <div class="card">
+            <h2>📊 STEP 5~6 — PPT + 카드뉴스</h2>
+            <div class="meta">Gemini + Google Slides + Canva | 후반부 약 65분</div>
+            <div class="desc">Behance/Dribbble 디자인 캡처(GoFullPage) → Gemini로 HEX 코드 추출 → NotebookLM이 슬라이드 대본 구조화 → Google Slides 적용 → Canva 카드뉴스</div>
+            <div class="tags">
+                <span class="tag">Gemini</span>
+                <span class="tag blue">Canva</span>
+                <span class="tag blue">GoFullPage</span>
+                <span class="tag">PPT</span>
+            </div>
+        </div>
 
-<!-- 5. 사전 준비 -->
-<div class="slide">
-  <div class="big-emoji">✅</div>
-  <h2>사전 준비</h2>
-  <p style="margin-bottom:.8em">아래 3가지만 준비하세요</p>
-  <div style="text-align:left;max-width:420px">
-    <p style="padding:.3em 0">1️⃣ <strong>구글 계정</strong> — 로그인 필수</p>
-    <p style="padding:.3em 0">2️⃣ <strong>Grok</strong> — grok.com 접속 확인</p>
-    <p style="padding:.3em 0">3️⃣ <strong>관심 주제</strong> — 리서치할 키워드 1개</p>
-  </div>
-</div>
+        <!-- 카드 6: 프롬프트 A -->
+        <div class="card">
+            <h2>🔗 프롬프트 A — 디자인 추출 프롬프트</h2>
+            <div class="meta">Gemini용 | 1,200자 이내 | WCAG AA 검증</div>
+            <div class="desc">이미지를 분석해 NotebookLM 슬라이드용 영문 디자인 코드블록 자동 생성. 7개 분석 카테고리, Type A~F 6종 레이아웃.</div>
+            <div class="tags">
+                <span class="tag">Gemini</span>
+                <span class="tag">디자인</span>
+                <span class="tag blue">프롬프트</span>
+            </div>
+            <br>
+            <a href="https://share.note.sx/tqcwd8uf" target="_blank" class="btn">프롬프트 보기 →</a>
+        </div>
 
-<!-- 6. STEP 1 Deep Research -->
-<div class="slide">
-  <div class="step-badge">STEP 1</div>
-  <div class="big-emoji">🔍</div>
-  <h1>Deep Research</h1>
-  <p><strong>Grok</strong>(grok.com)으로 주제 심층 리서치</p>
-  <p style="margin-top:.6em">핵심 데이터 · 팩트 · 통계를 텍스트로 정리</p>
-</div>
+        <!-- 카드 7: 프롬프트 B -->
+        <div class="card">
+            <h2>🔗 프롬프트 B — 마스터 대본 프롬프트</h2>
+            <div class="meta">NotebookLM용 | 40페이지 | 15장→40장 해킹</div>
+            <div class="desc">소스 분석 → 40페이지 Master Script Report 자동 생성. 슬라이드별 제목+화면텍스트+상세대본.</div>
+            <div class="tags">
+                <span class="tag">NotebookLM</span>
+                <span class="tag">PPT</span>
+                <span class="tag blue">프롬프트</span>
+            </div>
+            <br>
+            <a href="https://share.note.sx/qgnbx59w" target="_blank" class="btn">프롬프트 보기 →</a>
+        </div>
 
-<!-- 7. Grok 활용 팁 -->
-<div class="slide">
-  <h2>💡 Grok 활용 팁</h2>
-  <div style="text-align:left;max-width:520px;margin-top:.5em">
-    <p style="padding:.4em 0">🎯 구체적 키워드로 질문하기</p>
-    <p style="padding:.4em 0">📊 숫자·통계·트렌드 데이터 요청</p>
-    <p style="padding:.4em 0">📋 결과물을 <span class="accent">텍스트로 복사</span> → NotebookLM 소스로 활용</p>
-    <p style="padding:.4em 0">🔄 여러 번 질문해서 풍부한 자료 확보</p>
-  </div>
-</div>
+        <!-- 카드 8: 전체 강사 대본 -->
+        <div class="card">
+            <h2>📝 전체 강사 대본 (40장)</h2>
+            <div class="meta">마크다운 | NotebookLM 업로드용</div>
+            <div class="desc">40장 슬라이드 전체 강사 대본 + 프롬프트 가이드 + 도구 설명 + 원소스 멀티유즈 워크플로우. NotebookLM에 업로드하면 팟캐스트/슬라이드 자동 생성 가능.</div>
+            <br>
+            <a href="notebooklm-source-guide.md" class="btn">가이드 보기 →</a>
+        </div>
 
-<!-- 8. STEP 2 유튜브 링크 입력 -->
-<div class="slide">
-  <div class="step-badge">STEP 2</div>
-  <div class="big-emoji">🔗</div>
-  <h1>유튜브 링크 입력</h1>
-  <p>NotebookLM에 <span class="accent">유튜브 URL</span> 붙여넣기</p>
-  <p style="margin-top:.6em">Grok 리서치 + 유튜브 = <strong>복합 소스</strong></p>
-</div>
+        <!-- CTA 박스 -->
+        <div class="cta-box">
+            <h2>더 많은 AI 활용법이 궁금하다면?</h2>
+            <p>AI로 이커머스 자동화하고, 콘텐츠 생산성 10배 올리는 실전 노하우</p>
+            <div class="cta-buttons">
+                <a href="https://www.youtube.com/@aiebrain" target="_blank" class="btn btn-yt">▶ 유튜브 구독</a>
+                <a href="https://latpeed.com/products/p6-h5" target="_blank" class="btn btn-site">AI 마스터 패키지 →</a>
+            </div>
+        </div>
 
-<!-- 9. STEP 3 팟캐스트 생성 -->
-<div class="slide">
-  <div class="step-badge">STEP 3</div>
-  <div class="big-emoji">🎙️</div>
-  <h1>팟캐스트 생성</h1>
-  <p><strong>Audio Overview</strong> 클릭 → 초점 주제 지정</p>
-  <p style="margin-top:.6em">생성 대기 <span class="accent">5~8분</span> → AI가 대화형 팟캐스트 완성</p>
-</div>
-
-<!-- 10. 결과물 ① 팟캐스트 -->
-<div class="slide celebrate">
-  <div class="big-emoji">🎉</div>
-  <h2>결과물 ① 완성!</h2>
-  <div class="emoji-row">🎙️</div>
-  <h3 class="accent">AI 팟캐스트</h3>
-  <p>MP3 다운로드 → 바로 사용 가능</p>
-</div>
-
-<!-- 11. STEP 4 카드뉴스 -->
-<div class="slide">
-  <div class="step-badge">STEP 4</div>
-  <div class="big-emoji">📱</div>
-  <h1>SNS 카드뉴스</h1>
-  <p>NotebookLM 채팅 → 핵심 내용을 <span class="accent">카드뉴스 문구</span>로 추출</p>
-  <p style="margin-top:.6em">인스타 · 블로그용 <strong>3~5장</strong> 제작</p>
-</div>
-
-<!-- 12. Canva 실습 -->
-<div class="slide">
-  <div class="step-badge">STEP 4</div>
-  <h2>🎨 Canva 실습</h2>
-  <div style="text-align:left;max-width:480px;margin-top:.6em">
-    <p style="padding:.4em 0">1️⃣ Canva 접속 → 템플릿 선택</p>
-    <p style="padding:.4em 0">2️⃣ NotebookLM 추출 문구 배치</p>
-    <p style="padding:.4em 0">3️⃣ 색상 · 폰트 · 이미지 조정</p>
-    <p style="padding:.4em 0">4️⃣ PNG 다운로드</p>
-  </div>
-  <p style="margin-top:.8em"><span class="tag pink">결과물 ② SNS 카드뉴스 완성!</span></p>
-</div>
-
-<!-- 13. STEP 5 영상 제작 -->
-<div class="slide">
-  <div class="step-badge">STEP 5</div>
-  <div class="big-emoji">🎬</div>
-  <h1>영상 제작</h1>
-  <p><strong>CapCut 웹</strong>(무료)으로 팟캐스트 + 카드뉴스 합치기</p>
-  <p style="margin-top:.6em">팟캐스트가 <span class="accent">내레이션</span>, 카드뉴스가 <span class="accent2">화면</span></p>
-</div>
-
-<!-- 14. CapCut 실습 흐름 -->
-<div class="slide">
-  <div class="step-badge">STEP 5</div>
-  <h2>🎞️ CapCut 실습 흐름</h2>
-  <div style="text-align:left;max-width:520px;margin-top:.6em">
-    <p style="padding:.4em 0">1️⃣ 새 프로젝트 → MP3 업로드 <span class="dim" style="color:var(--dim)">(5분)</span></p>
-    <p style="padding:.4em 0">2️⃣ 카드뉴스 이미지 순서 배치 <span class="dim" style="color:var(--dim)">(5분)</span></p>
-    <p style="padding:.4em 0">3️⃣ 자동 자막 생성 <span class="dim" style="color:var(--dim)">(10분)</span></p>
-    <p style="padding:.4em 0">4️⃣ 1080p 내보내기 <span class="dim" style="color:var(--dim)">(5분)</span></p>
-  </div>
-</div>
-
-<!-- 15. 자동 자막 WOW -->
-<div class="slide celebrate">
-  <div class="big-emoji">🤩</div>
-  <h2>자동 자막 <span class="accent">30초</span> 완성!</h2>
-  <p style="margin-top:.4em">텍스트 → 자동 캡션 → 한국어 → 생성</p>
-  <p style="margin-top:.8em"><span class="tag green">결과물 ③ 자막 포함 영상 완성!</span></p>
-  <p style="margin-top:.6em;color:var(--dim);font-size:.9rem">유튜브 · 인스타 릴스 · 블로그 임베드까지</p>
-</div>
-
-<!-- 16. STEP 6 PPT 슬라이드 -->
-<div class="slide">
-  <div class="step-badge">STEP 6</div>
-  <div class="big-emoji">📊</div>
-  <h1>PPT 슬라이드</h1>
-  <p>NotebookLM + Gemini로 <span class="accent">자동 생성</span></p>
-  <p style="margin-top:.6em">디자인 레퍼런스 → HEX 추출 → 슬라이드 생성</p>
-</div>
-
-<!-- 17. 디자인 추출 -->
-<div class="slide">
-  <div class="step-badge">STEP 6-1</div>
-  <h2>🎨 디자인 HEX 추출</h2>
-  <div style="text-align:left;max-width:520px;margin-top:.6em">
-    <p style="padding:.4em 0">1️⃣ Behance / Dribbble에서 디자인 찾기</p>
-    <p style="padding:.4em 0">2️⃣ GoFullPage로 전체 캡처</p>
-    <p style="padding:.4em 0">3️⃣ Gemini에 캡처 + 프롬프트 입력</p>
-  </div>
-  <p style="margin-top:1em;font-size:.9rem">프롬프트 👉 <a href="https://share.note.sx/tqcwd8uf" target="_blank">share.note.sx/tqcwd8uf</a></p>
-</div>
-
-<!-- 18. 40장 생성 -->
-<div class="slide celebrate">
-  <div class="big-emoji">✨</div>
-  <h2><span class="accent">40장</span> 슬라이드 자동 생성</h2>
-  <p>15장 제한 해킹 → 풀 프레젠테이션 완성</p>
-  <p style="margin-top:.8em;font-size:.9rem">프롬프트 👉 <a href="https://share.note.sx/qgnbx59w" target="_blank">share.note.sx/qgnbx59w</a></p>
-  <p style="margin-top:.6em"><span class="tag">결과물 ④ PPT 슬라이드 완성!</span></p>
-</div>
-
-<!-- 19. 원소스 멀티유즈 다이어그램 -->
-<div class="slide">
-  <h2>♻️ 원소스 멀티유즈</h2>
-  <div class="diagram">
-    <div class="root">📓 자료 1개 (NotebookLM)</div>
-    <div class="branch">├─ 🎙️ 팟캐스트 (오디오)</div>
-    <div class="branch">├─ 📱 카드뉴스 (이미지)</div>
-    <div class="branch">├─ 🎬 팟캐스트 + 카드뉴스 = 영상 (MP4)</div>
-    <div class="branch">└─ 📊 PPT 슬라이드 (발표)</div>
-  </div>
-  <p style="margin-top:1em">자료 <span class="accent">1개</span>로 콘텐츠 <span class="accent">4종</span> 완성</p>
-</div>
-
-<!-- 20. 감사 + CTA -->
-<div class="slide">
-  <div class="big-emoji">🙏</div>
-  <h1>감사합니다!</h1>
-  <p style="margin-top:.4em;font-size:clamp(1rem,1.6vw,1.2rem)">오늘 배운 것, <strong>딱 하나</strong>만 실천해 보세요</p>
-  <div style="margin-top:1.5em">
-    <p><span class="tag">latpeed.com/products/p6-h5</span></p>
-    <p style="margin-top:.6em;font-size:1.1rem"><strong class="accent">@aiebrain</strong></p>
-    <p style="margin-top:.8em;color:var(--dim);font-size:.95rem">함께 성장하는 <strong>이브레인</strong>이었습니다.</p>
-  </div>
-</div>
-
-</div><!-- /deck -->
-
-<script>
-(function(){
-  const slides=document.querySelectorAll('.slide');
-  const total=slides.length;
-  let cur=0;
-  const pagenum=document.getElementById('pagenum');
-  const progress=document.getElementById('progress');
-
-  function go(n){
-    if(n<0||n>=total)return;
-    slides[cur].classList.remove('active');
-    cur=n;
-    slides[cur].classList.add('active');
-    pagenum.textContent=(cur+1)+' / '+total;
-    progress.style.width=((cur+1)/total*100)+'%';
-  }
-
-  go(0);
-
-  document.addEventListener('keydown',function(e){
-    if(e.key==='ArrowRight'||e.key===' ')go(cur+1);
-    else if(e.key==='ArrowLeft')go(cur-1);
-  });
-
-  document.addEventListener('click',function(e){
-    if(e.target.tagName==='A')return;
-    const x=e.clientX/window.innerWidth;
-    x>0.5?go(cur+1):go(cur-1);
-  });
-
-  // touch swipe
-  let tx=0;
-  document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX});
-  document.addEventListener('touchend',function(e){
-    const dx=e.changedTouches[0].clientX-tx;
-    if(Math.abs(dx)>50){dx<0?go(cur+1):go(cur-1)}
-  });
-})();
-</script>
+        <footer>
+            <p>© 2026 이브레인 만성 | <a href="https://github.com/aiebrain" target="_blank">GitHub</a></p>
+        </footer>
+    </div>
 </body>
 </html>

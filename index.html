@@ -179,6 +179,8 @@
     <a href="#tools-all" data-section="tools-all"><span class="nav-badge" style="font-size:10px">🛠</span>도구 모음</a>
     <a href="#recording" data-section="recording"><span class="nav-badge" style="font-size:10px">🎬</span>녹화영상</a>
     <a href="#diagram" data-section="diagram"><span class="nav-badge" style="font-size:10px">🔄</span>원소스 멀티유즈</a>
+    <div style="height:1px;background:var(--border);margin:12px 20px"></div>
+    <a href="#hidino" data-section="hidino"><span class="nav-badge" style="background:#9333ea;color:#fff">H</span>하이디노 · AI 웹제작</a>
   </nav>
 </aside>
 
@@ -727,6 +729,61 @@ FUNCTION_02_CALL_STUDIO() {
         </div>
       </div>
     </div>
+
+    <!-- ════════════ 하이디노 AI 웹사이트 제작 ════════════ -->
+    <div class="section" id="hidino">
+      <div class="section-header">
+        <span class="section-number" style="background:#9333ea">H</span>
+        <div class="section-title">하이디노 · AI로 웹사이트 만들기</div>
+      </div>
+      <div class="card" style="border-left:3px solid #9333ea">
+        <p><strong>강사:</strong> 하이디노 | <strong>주제:</strong> Google AI Studio + Netlify로 나만의 웹사이트 만들기</p>
+        <p style="color:var(--text-dim);margin-top:8px">프롬프트 5개만으로 로고 디자인 업체 웹사이트를 완성하고, GitHub + Netlify로 무료 배포까지!</p>
+
+        <div style="margin:20px 0">
+          <a class="tool-link" href="https://open.kakao.com/o/g7eqtDni" target="_blank"><span class="dot"><span></span></span>💬 오픈채팅방 (비번: 1234)</a>
+          <a class="tool-link" href="https://drive.google.com/file/d/1WZ4NmOdA_9A_wYITtcnQz8osOx1YhuE-/view?usp=drive_link" target="_blank"><span class="dot"><span></span></span>🎬 실습 영상</a>
+          <a class="tool-link" href="https://imagnation.netlify.app/" target="_blank"><span class="dot"><span></span></span>🌐 샘플 홈페이지</a>
+        </div>
+
+        <h3 style="margin:24px 0 12px;font-size:16px;font-weight:700">🛠 사용 도구</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <a class="tool-link" href="https://aistudio.google.com/prompts/new_chat" target="_blank"><span class="dot"><span></span></span>Google AI Studio</a>
+          <a class="tool-link" href="https://gemini.google.com/app?hl=ko" target="_blank"><span class="dot"><span></span></span>Gemini</a>
+          <a class="tool-link" href="https://formspree.io/" target="_blank"><span class="dot"><span></span></span>Formspree (폼 수집)</a>
+          <a class="tool-link" href="https://www.netlify.com/" target="_blank"><span class="dot"><span></span></span>Netlify (무료 배포)</a>
+        </div>
+
+        <h3 style="margin:24px 0 12px;font-size:16px;font-weight:700">📝 실습 단계</h3>
+        <div class="checklist">
+          <div class="check-item"><span class="check-icon">1️⃣</span> <strong>프롬프트 1</strong> — 웹사이트 기본 구조 생성 (블랙+퍼플 디자인, 관리자 대시보드, CMS, 반응형)</div>
+          <div class="check-item"><span class="check-icon">2️⃣</span> <strong>프롬프트 2</strong> — 비주얼 섹션 디자인 수정 ("상상력 점포에 맞게 디자인 다시 해줘")</div>
+          <div class="check-item"><span class="check-icon">3️⃣</span> <strong>프롬프트 3</strong> — 이미지를 사진 같은 이미지로 변경 + 인터랙션 추가</div>
+          <div class="check-item"><span class="check-icon">4️⃣</span> <strong>프롬프트 4</strong> — 상담란 추가 (이름, 이메일, 문의사항 폼)</div>
+          <div class="check-item"><span class="check-icon">5️⃣</span> <strong>프롬프트 5</strong> — Formspree 연동으로 고객 데이터 수집</div>
+          <div class="check-item"><span class="check-icon">6️⃣</span> <strong>GitHub 저장</strong> — 톱니바퀴 → GitHub 이름 → Public → Create git repo → Stage and commit</div>
+          <div class="check-item"><span class="check-icon">7️⃣</span> <strong>Netlify 배포</strong> — Project → Import a Git repository → 완료!</div>
+        </div>
+
+        <div style="margin-top:20px;padding:16px;background:rgba(147,51,234,0.08);border-radius:12px">
+          <strong>💡 핵심 프롬프트 (1단계)</strong>
+          <pre style="margin:8px 0 0;white-space:pre-wrap;font-size:13px;line-height:1.6;color:var(--text)">웹사이트 이름: 상상점포
+웹사이트 유형: 로고 디자인 및 홈페이지 제작 전문 업체
+
+Google AI Studio가 아래 조건을 충족하는 웹사이트를 제작하도록 지시하세요.
+- 모던하고 고급스러운 디자인, 전문성이 강조된 UI/UX
+- 관리자 대시보드 포함, 완전 편집형 구조
+- CMS(콘텐츠 관리 시스템) 포함
+- 텍스트, 이미지, 테마, 컬러, 폰트 자유롭게 커스터마이징
+- 샘플 콘텐츠(플레이스홀더) 기본 제공
+- SEO 최적화, 소셜 미디어 연동, 반응형 웹 디자인
+- 전체 사이트 한글 기반
+- 블랙 배경 + 퍼플 포인트 컬러</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
 
     <!-- ════════════ CTA ════════════ -->
     <div class="cta-section">
